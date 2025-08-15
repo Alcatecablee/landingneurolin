@@ -114,7 +114,19 @@ export const GlowingBorderShowcase = () => (
     </PulsingGlowCard>
 
     <div className="flex justify-center items-center">
-      <GlowingButton onClick={() => alert("Glowing button clicked!")}>
+      <GlowingButton onClick={() => {
+        // Replace alert with proper notification system
+        if (typeof window !== 'undefined') {
+          const event = new CustomEvent('showNotification', {
+            detail: {
+              type: 'info',
+              message: 'Glowing button clicked!',
+              title: 'Button Interaction'
+            }
+          });
+          window.dispatchEvent(event);
+        }
+      }}>
         Glowing Button
       </GlowingButton>
     </div>

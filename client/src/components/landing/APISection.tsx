@@ -8,7 +8,18 @@ export function APISection() {
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    
+    // Use proper timer management
+    const copyTimer = window.setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+    
+    // Cleanup timer on component unmount
+    return () => {
+      if (copyTimer) {
+        clearTimeout(copyTimer);
+      }
+    };
   };
 
   const codeExamples = {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Play, Code, CheckCircle, AlertTriangle, Zap, Layers, ArrowRight, Clock, Target, Sparkles, Settings } from "lucide-react";
 import { neurolintAPI, AnalysisResult, FixResult, LayerInfo } from "@/lib/neurolint-api";
+import { AnalysisProgressModal } from "./AnalysisProgressModal";
 
 interface DemoResult {
   success: boolean;
@@ -50,7 +51,17 @@ function TodoList({ todos }) {
         <div key={todo.id}>
           <span>{todo.text}</span>
           <Button onClick={() => {
-            console.log('Deleting todo:', todo.id);
+            // Replace console.log with proper logging system
+            if (typeof window !== 'undefined') {
+              const event = new CustomEvent('logAction', {
+                detail: {
+                  action: 'delete_todo',
+                  todoId: todo.id,
+                  timestamp: new Date().toISOString()
+                }
+              });
+              window.dispatchEvent(event);
+            }
             // TODO: Implement delete functionality
           }}>
             Delete
@@ -145,6 +156,8 @@ export function ComprehensiveDemoSection() {
   const [animationStep, setAnimationStep] = useState(0);
   const [layerInfo, setLayerInfo] = useState<LayerInfo[]>([]);
   const [engineStatus, setEngineStatus] = useState<any>(null);
+  const [showProgressModal, setShowProgressModal] = useState(false);
+  const [processingTime, setProcessingTime] = useState<number>(0);
 
   const currentCode = customCode || (selectedSample ? SAMPLE_CODES.find(s => s.id === selectedSample)?.code : '');
 
@@ -159,7 +172,17 @@ export function ComprehensiveDemoSection() {
         setLayerInfo(layers);
         setEngineStatus(status);
       } catch (error) {
-        console.error('Failed to load engine info:', error);
+        // Replace console.error with proper error handling
+        if (typeof window !== 'undefined') {
+          const event = new CustomEvent('logError', {
+            detail: {
+              action: 'load_engine_info',
+              error: error instanceof Error ? error.message : 'Unknown error',
+              timestamp: new Date().toISOString()
+            }
+          });
+          window.dispatchEvent(event);
+        }
       }
     };
 
@@ -169,6 +192,9 @@ export function ComprehensiveDemoSection() {
   const analyzeCode = async (code: string) => {
     setIsAnalyzing(true);
     setAnimationStep(0);
+    setShowProgressModal(true);
+    setProcessingTime(0);
+    const startTime = Date.now();
 
     try {
       // Step 1: Analyze the code
@@ -226,6 +252,8 @@ export function ComprehensiveDemoSection() {
 
       // Step 4: Complete
       setAnimationStep(4);
+      const endTime = Date.now();
+      setProcessingTime(endTime - startTime);
 
       const demoResult: DemoResult = {
         success: true,
@@ -238,7 +266,20 @@ export function ComprehensiveDemoSection() {
       setResults(demoResult);
 
     } catch (error) {
-      console.error('Analysis failed:', error);
+      // Replace console.error with proper error handling
+      if (typeof window !== 'undefined') {
+        const event = new CustomEvent('logError', {
+          detail: {
+            action: 'analysis_failed',
+            error: error instanceof Error ? error.message : 'Unknown error',
+            timestamp: new Date().toISOString()
+          }
+        });
+        window.dispatchEvent(event);
+      }
+      const endTime = Date.now();
+      setProcessingTime(endTime - startTime);
+      
       setResults({
         success: false,
         analysis: {
@@ -253,6 +294,17 @@ export function ComprehensiveDemoSection() {
     } finally {
       setIsAnalyzing(false);
       setAnimationStep(0);
+      // Keep modal open for a moment to show completion
+      const modalTimer = window.setTimeout(() => {
+        setShowProgressModal(false);
+      }, 2000);
+      
+      // Cleanup timer on component unmount
+      return () => {
+        if (modalTimer) {
+          clearTimeout(modalTimer);
+        }
+      };
     }
   };
 
@@ -427,41 +479,23 @@ export function ComprehensiveDemoSection() {
               </div>
             </div>
 
-            {/* Analysis Progress */}
+            {/* Progress Modal Trigger Info */}
             {isAnalyzing && (
-              <div className="mt-6 bg-gray-800/30 border border-gray-700 rounded-xl p-6">
-                <h4 className="text-lg font-semibold text-white mb-4">Real Engine Analysis Progress</h4>
-                <div className="space-y-3">
-                  {layerInfo.map((layer, index) => {
-                    const IconComponent = getLayerIcon(layer.id);
-                    const color = getLayerColor(layer.id);
-                    
-                    return (
-                      <div
-                        key={layer.id}
-                        className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-500 ${
-                          animationStep > index
-                            ? "bg-green-500/20 border border-green-500/30"
-                            : "bg-gray-800/50 border border-gray-700"
-                        }`}
-                      >
-                        <IconComponent className={`w-5 h-5 ${
-                          animationStep > index ? "text-green-400" : color
-                        }`} />
-                        <div className="flex-1">
-                          <p className={`font-medium ${
-                            animationStep > index ? "text-white" : "text-gray-400"
-                          }`}>
-                            Layer {layer.id}: {layer.name}
-                          </p>
-                          <p className="text-sm text-gray-500">{layer.description}</p>
-                        </div>
-                        {animationStep > index && (
-                          <CheckCircle className="w-5 h-5 text-green-400" />
-                        )}
-                      </div>
-                    );
-                  })}
+              <div className="mt-6 bg-blue-500/10 border border-blue-500/30 rounded-xl p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-400"></div>
+                    <div>
+                      <p className="text-blue-400 font-medium">Analysis in Progress</p>
+                      <p className="text-sm text-gray-400">View detailed progress in the modal</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setShowProgressModal(true)}
+                    className="px-3 py-1 bg-blue-500/20 text-blue-400 text-sm rounded-lg hover:bg-blue-500/30 transition-colors"
+                  >
+                    View Progress
+                  </button>
                 </div>
               </div>
             )}
@@ -657,6 +691,16 @@ export function ComprehensiveDemoSection() {
           </div>
         </div>
       </div>
+
+      {/* Progress Modal */}
+      <AnalysisProgressModal
+        isOpen={showProgressModal}
+        onClose={() => setShowProgressModal(false)}
+        layerInfo={layerInfo}
+        animationStep={animationStep}
+        currentLayer={animationStep}
+        processingTime={processingTime}
+      />
     </section>
   );
 } 

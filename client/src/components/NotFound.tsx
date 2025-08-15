@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Home, Mail, Zap, Settings, Code, Database } from "lucide-react";
+import styles from "./NotFound.module.css";
 
 export function NotFound() {
   return (
@@ -7,12 +8,10 @@ export function NotFound() {
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
-          className="absolute top-1/3 -left-1/4 w-1/3 h-1/3 bg-zinc-900/15 rounded-full blur-3xl animate-pulse"
-          style={{ animationDuration: "5s" }}
+          className={`absolute top-1/3 -left-1/4 w-1/3 h-1/3 bg-zinc-900/15 rounded-full blur-3xl animate-pulse ${styles.backgroundPulse5s}`}
         ></div>
         <div
-          className="absolute bottom-1/3 -right-1/4 w-1/3 h-1/3 bg-zinc-800/10 rounded-full blur-3xl animate-pulse"
-          style={{ animationDuration: "7s", animationDelay: "1s" }}
+          className={`absolute bottom-1/3 -right-1/4 w-1/3 h-1/3 bg-zinc-800/10 rounded-full blur-3xl animate-pulse ${styles.backgroundPulse7s}`}
         ></div>
       </div>
 
@@ -24,14 +23,12 @@ export function NotFound() {
               404
             </h1>
             <h2
-              className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6 animate-slide-in-up"
-              style={{ animationDelay: "0.2s" }}
+              className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6 animate-slide-in-up ${styles.animationDelay02s}`}
             >
               Looking for the App?
             </h2>
             <p
-              className="text-lg sm:text-xl text-zinc-300 leading-relaxed max-w-2xl mx-auto px-4 animate-slide-in-up"
-              style={{ animationDelay: "0.4s" }}
+              className={`text-lg sm:text-xl text-zinc-300 leading-relaxed max-w-2xl mx-auto px-4 animate-slide-in-up ${styles.animationDelay04s}`}
             >
               The NeuroLint application is available at app.neurolint.dev. Get
               started with our advanced code analysis platform.
@@ -40,8 +37,7 @@ export function NotFound() {
 
           {/* Call to Action */}
           <div
-            className="bg-zinc-900/60 border border-zinc-700 rounded-2xl p-6 sm:p-8 mb-12 backdrop-blur-xl transform transition-all duration-500 hover:scale-[1.02] animate-slide-in-up"
-            style={{ animationDelay: "0.6s" }}
+            className={`bg-zinc-900/60 border border-zinc-700 rounded-2xl p-6 sm:p-8 mb-12 backdrop-blur-xl transform transition-all duration-500 hover:scale-[1.02] animate-slide-in-up ${styles.animationDelay06s}`}
           >
             <div className="mb-8">
               <div className="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-6 transform transition-all duration-300 hover:scale-110">

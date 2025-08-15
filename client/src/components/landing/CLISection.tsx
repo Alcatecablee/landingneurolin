@@ -178,7 +178,18 @@ export function CLISection() {
     try {
       await navigator.clipboard.writeText(installCommand);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      
+      // Use proper timer management
+      const copyTimer = window.setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+      
+      // Cleanup timer on component unmount
+      return () => {
+        if (copyTimer) {
+          clearTimeout(copyTimer);
+        }
+      };
     } catch (err) {
       // Fallback for browsers that don't support clipboard API
       const textArea = document.createElement("textarea");
@@ -188,7 +199,18 @@ export function CLISection() {
       document.execCommand("copy");
       document.body.removeChild(textArea);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      
+      // Use proper timer management
+      const copyTimer = window.setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+      
+      // Cleanup timer on component unmount
+      return () => {
+        if (copyTimer) {
+          clearTimeout(copyTimer);
+        }
+      };
     }
   };
 

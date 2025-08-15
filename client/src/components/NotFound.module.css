@@ -1,0 +1,20 @@
+.backgroundPulse5s {
+  animation-duration: 5s;
+}
+
+.backgroundPulse7s {
+  animation-duration: 7s;
+  animation-delay: 1s;
+}
+
+.animationDelay02s {
+  animation-delay: 0.2s;
+}
+
+.animationDelay04s {
+  animation-delay: 0.4s;
+}
+
+.animationDelay06s {
+  animation-delay: 0.6s;
+} 

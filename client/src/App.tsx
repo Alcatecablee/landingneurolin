@@ -7,9 +7,11 @@ import Index from "./pages/Index";
 import { NotFound } from "./components/NotFound";
 import { SiteHeader } from "./components/SiteHeader";
 import { SiteFooter } from "./components/SiteFooter";
+import { ErrorNotification, useNotifications } from "./components/ui/ErrorNotification";
 
 const App = () => {
   const [currentView, setCurrentView] = useState<"landing" | "404">("landing");
+  const { notifications, dismissNotification } = useNotifications();
 
   useEffect(() => {
     // Check if user came from app.neurolint.dev or any direct app link
@@ -57,6 +59,10 @@ const App = () => {
 
         <Toaster />
         <Sonner />
+        <ErrorNotification 
+          notifications={notifications} 
+          onDismiss={dismissNotification} 
+        />
 
         {renderContent()}
       </TooltipProvider>

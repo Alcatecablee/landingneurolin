@@ -1,0 +1,662 @@
+import React, { useState, useEffect } from "react";
+import { Play, Code, CheckCircle, AlertTriangle, Zap, Layers, ArrowRight, Clock, Target, Sparkles, Settings } from "lucide-react";
+import { neurolintAPI, AnalysisResult, FixResult, LayerInfo } from "@/lib/neurolint-api";
+
+interface DemoResult {
+  success: boolean;
+  analysis: {
+    recommendedLayers: number[];
+    detectedIssues: Array<{
+      type: string;
+      severity: "low" | "medium" | "high" | "critical";
+      description: string;
+      fixedByLayer: number;
+      line?: number;
+      column?: number;
+      ruleId?: string;
+    }>;
+    confidence: number;
+    processingTime: number;
+    analysisId: string;
+  };
+  layers: Array<{
+    layerId: number;
+    success: boolean;
+    improvements: string[];
+  }>;
+  transformed?: string;
+  fixResult?: FixResult;
+}
+
+const SAMPLE_CODES = [
+  {
+    id: "react-component-issues",
+    name: "React Component with Issues",
+    description: "Missing TypeScript types, console.log, missing key props",
+    code: `import React from 'react';
+
+function Button({ children, onClick }) {
+  return (
+    <button onClick={onClick} className="btn">
+      {children}
+    </button>
+  );
+}
+
+function TodoList({ todos }) {
+  return (
+    <div>
+      {todos.map(todo => (
+        <div key={todo.id}>
+          <span>{todo.text}</span>
+          <Button onClick={() => {
+            console.log('Deleting todo:', todo.id);
+            // TODO: Implement delete functionality
+          }}>
+            Delete
+          </Button>
+        </div>
+      ))}
+    </div>
+  );
+}`,
+    language: "tsx"
+  },
+  {
+    id: "nextjs-app-router",
+    name: "Next.js App Router Component",
+    description: "SSR issues, localStorage access, missing error handling",
+    code: `'use client';
+
+import { useState, useEffect } from 'react';
+
+export default function UserProfile({ userId }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(\`/api/users/\${userId}\`)
+      .then(res => res.json())
+      .then(data => {
+        setUser(data);
+        setLoading(false);
+      });
+  }, [userId]);
+
+  if (loading) return <div>Loading...</div>;
+
+  return (
+    <div>
+      <h1>{user.name}</h1>
+      <p>{user.email}</p>
+      <button onClick={() => localStorage.setItem('theme', 'dark')}>
+        Set Dark Theme
+      </button>
+    </div>
+  );
+}`,
+    language: "tsx"
+  },
+  {
+    id: "hydration-errors",
+    name: "Hydration Error Component",
+    description: "Hydration mismatch issues with localStorage",
+    code: `'use client';
+
+import { useState, useEffect } from 'react';
+
+export default function ThemeProvider() {
+  const [theme, setTheme] = useState('light');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    setTheme(savedTheme);
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div>Loading theme...</div>;
+  }
+
+  return (
+    <div className={\`theme-\${theme}\`}>
+      <h1>Current theme: {theme}</h1>
+      <button onClick={() => {
+        const newTheme = theme === 'light' ? 'dark' : 'light';
+        setTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+      }}>
+        Toggle Theme
+      </button>
+    </div>
+  );
+}`,
+    language: "tsx"
+  }
+];
+
+export function ComprehensiveDemoSection() {
+  const [customCode, setCustomCode] = useState('');
+  const [selectedSample, setSelectedSample] = useState<string | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [results, setResults] = useState<DemoResult | null>(null);
+  const [activeTab, setActiveTab] = useState<'before' | 'after' | 'layers'>('before');
+  const [animationStep, setAnimationStep] = useState(0);
+  const [layerInfo, setLayerInfo] = useState<LayerInfo[]>([]);
+  const [engineStatus, setEngineStatus] = useState<any>(null);
+
+  const currentCode = customCode || (selectedSample ? SAMPLE_CODES.find(s => s.id === selectedSample)?.code : '');
+
+  // Load layer information and engine status on component mount
+  useEffect(() => {
+    const loadEngineInfo = async () => {
+      try {
+        const [layers, status] = await Promise.all([
+          neurolintAPI.getLayerInfo(),
+          neurolintAPI.getEngineStatus()
+        ]);
+        setLayerInfo(layers);
+        setEngineStatus(status);
+      } catch (error) {
+        console.error('Failed to load engine info:', error);
+      }
+    };
+
+    loadEngineInfo();
+  }, []);
+
+  const analyzeCode = async (code: string) => {
+    setIsAnalyzing(true);
+    setAnimationStep(0);
+
+    try {
+      // Step 1: Analyze the code
+      setAnimationStep(1);
+      const analysisResult = await neurolintAPI.analyzeCode({
+        code,
+        layers: [1, 2, 3, 4, 5, 6, 7],
+        filePath: 'demo.tsx',
+        options: {
+          backup: false,
+          clientId: 'demo'
+        }
+      });
+
+      if (!analysisResult.success) {
+        throw new Error(analysisResult.error || 'Analysis failed');
+      }
+
+      // Step 2: Apply fixes if issues were found
+      setAnimationStep(2);
+      let fixResult: FixResult | undefined;
+      let transformedCode = code;
+
+      if (analysisResult.analysis && analysisResult.analysis.detectedIssues.length > 0) {
+        fixResult = await neurolintAPI.fixCode({
+          code,
+          issues: analysisResult.analysis.detectedIssues,
+          options: {
+            backup: false,
+            filePath: 'demo.tsx'
+          }
+        });
+
+        if (fixResult.success && fixResult.code) {
+          transformedCode = fixResult.code;
+        }
+      }
+
+      // Step 3: Generate layer improvements
+      setAnimationStep(3);
+      const layerImprovements = analysisResult.analysis?.detectedIssues.reduce((acc, issue) => {
+        const layerId = issue.fixedByLayer;
+        if (!acc[layerId]) {
+          acc[layerId] = [];
+        }
+        acc[layerId].push(issue.description);
+        return acc;
+      }, {} as Record<number, string[]>) || {};
+
+      const layers = Array.from({ length: 7 }, (_, i) => i + 1).map(layerId => ({
+        layerId,
+        success: layerImprovements[layerId] ? layerImprovements[layerId].length > 0 : false,
+        improvements: layerImprovements[layerId] || []
+      }));
+
+      // Step 4: Complete
+      setAnimationStep(4);
+
+      const demoResult: DemoResult = {
+        success: true,
+        analysis: analysisResult.analysis!,
+        layers,
+        transformed: transformedCode,
+        fixResult
+      };
+
+      setResults(demoResult);
+
+    } catch (error) {
+      console.error('Analysis failed:', error);
+      setResults({
+        success: false,
+        analysis: {
+          recommendedLayers: [],
+          detectedIssues: [],
+          confidence: 0,
+          processingTime: 0,
+          analysisId: ''
+        },
+        layers: []
+      });
+    } finally {
+      setIsAnalyzing(false);
+      setAnimationStep(0);
+    }
+  };
+
+  const handleAnalyze = () => {
+    if (currentCode) {
+      analyzeCode(currentCode);
+    }
+  };
+
+  const getSeverityColor = (severity: string) => {
+    switch (severity) {
+      case 'critical': return 'text-red-400';
+      case 'high': return 'text-orange-400';
+      case 'medium': return 'text-yellow-400';
+      case 'low': return 'text-green-400';
+      default: return 'text-gray-400';
+    }
+  };
+
+  const getSeverityIcon = (severity: string) => {
+    switch (severity) {
+      case 'critical':
+      case 'high':
+        return <AlertTriangle className="w-4 h-4" />;
+      case 'medium':
+        return <Clock className="w-4 h-4" />;
+      case 'low':
+        return <CheckCircle className="w-4 h-4" />;
+      default:
+        return <CheckCircle className="w-4 h-4" />;
+    }
+  };
+
+  const getLayerIcon = (layerId: number) => {
+    const icons = [Settings, Code, Sparkles, Target, Zap, CheckCircle, Layers];
+    return icons[layerId - 1] || Settings;
+  };
+
+  const getLayerColor = (layerId: number) => {
+    const colors = [
+      'text-blue-400',
+      'text-green-400', 
+      'text-purple-400',
+      'text-orange-400',
+      'text-pink-400',
+      'text-cyan-400',
+      'text-indigo-400'
+    ];
+    return colors[layerId - 1] || 'text-gray-400';
+  };
+
+  return (
+    <section
+      id="comprehensive-demo"
+      className="py-24 px-4"
+      role="region"
+      aria-labelledby="comprehensive-demo-heading"
+    >
+      <div className="max-w-7xl mx-auto">
+        {/* Section Header */}
+        <div className="text-center mb-20">
+          <h2
+            id="comprehensive-demo-heading"
+            className="text-5xl md:text-7xl font-black mb-8 tracking-tight text-white"
+          >
+            Experience the 7-Layer Engine
+          </h2>
+          <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto font-medium">
+            Watch how our comprehensive rule-based system transforms legacy code into modern, 
+            production-ready solutions across all 7 analysis layers.
+          </p>
+          {engineStatus && (
+            <div className="mt-4 text-sm text-gray-400">
+              Engine v{engineStatus.version} • {engineStatus.totalRules} rules • {engineStatus.stats.analyses} analyses completed
+            </div>
+          )}
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
+          {/* Input Section - Primary */}
+          <div className="order-2 lg:order-1">
+            <div className="bg-gray-900/90 border border-gray-700 rounded-2xl overflow-hidden shadow-2xl">
+              {/* Terminal Header */}
+              <div className="bg-gray-800 px-4 py-3 flex items-center gap-2 border-b border-gray-700">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 bg-zinc-600 rounded-full"></div>
+                  <div className="w-3 h-3 bg-zinc-600 rounded-full"></div>
+                  <div className="w-3 h-3 bg-zinc-600 rounded-full"></div>
+                </div>
+                <div className="text-sm text-gray-300 ml-4 flex items-center gap-2">
+                  <Code className="w-4 h-4" />
+                  Your Code
+                </div>
+              </div>
+
+              {/* Tab Controls */}
+              <div className="bg-gray-800/50 border-b border-gray-700">
+                <div className="flex">
+                  <button
+                    onClick={() => setSelectedSample(null)}
+                    className={`px-6 py-3 text-sm font-medium transition-colors ${
+                      !selectedSample
+                        ? "text-white border-b-2 border-zinc-600 bg-zinc-800"
+                        : "text-gray-400 hover:text-white"
+                    }`}
+                  >
+                    Custom Code
+                  </button>
+                  <button
+                    onClick={() => setSelectedSample(SAMPLE_CODES[0].id)}
+                    className={`px-6 py-3 text-sm font-medium transition-colors ${
+                      selectedSample
+                        ? "text-white border-b-2 border-zinc-600 bg-zinc-800"
+                        : "text-gray-400 hover:text-white"
+                    }`}
+                  >
+                    Sample Code
+                  </button>
+                </div>
+              </div>
+
+              {/* Code Input */}
+              {!selectedSample ? (
+                <div className="p-6">
+                  <textarea
+                    value={customCode}
+                    onChange={(e) => setCustomCode(e.target.value)}
+                    placeholder="Paste your React/Next.js code here..."
+                    className="w-full h-64 bg-black/50 border border-gray-700 rounded-lg p-4 text-sm text-gray-300 font-mono resize-none focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+              ) : (
+                <div className="p-6">
+                  <div className="mb-4">
+                    <select
+                      value={selectedSample}
+                      onChange={(e) => setSelectedSample(e.target.value)}
+                      className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white text-sm"
+                    >
+                      {SAMPLE_CODES.map((sample) => (
+                        <option key={sample.id} value={sample.id}>
+                          {sample.name} - {sample.description}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="bg-black/50 rounded p-4 text-sm text-gray-300 font-mono overflow-x-auto">
+                    <pre className="whitespace-pre-wrap">{currentCode}</pre>
+                  </div>
+                </div>
+              )}
+
+              {/* Analyze Button */}
+              <div className="p-6 border-t border-gray-700">
+                <button
+                  onClick={handleAnalyze}
+                  disabled={isAnalyzing || !currentCode}
+                  className="w-full bg-zinc-900 text-white font-semibold py-3 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-zinc-800"
+                >
+                  {isAnalyzing ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      Analyzing with Real 7-Layer Engine...
+                    </>
+                  ) : (
+                    <>
+                      <Play className="w-4 h-4" />
+                      Analyze with Real 7-Layer Engine
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Analysis Progress */}
+            {isAnalyzing && (
+              <div className="mt-6 bg-gray-800/30 border border-gray-700 rounded-xl p-6">
+                <h4 className="text-lg font-semibold text-white mb-4">Real Engine Analysis Progress</h4>
+                <div className="space-y-3">
+                  {layerInfo.map((layer, index) => {
+                    const IconComponent = getLayerIcon(layer.id);
+                    const color = getLayerColor(layer.id);
+                    
+                    return (
+                      <div
+                        key={layer.id}
+                        className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-500 ${
+                          animationStep > index
+                            ? "bg-green-500/20 border border-green-500/30"
+                            : "bg-gray-800/50 border border-gray-700"
+                        }`}
+                      >
+                        <IconComponent className={`w-5 h-5 ${
+                          animationStep > index ? "text-green-400" : color
+                        }`} />
+                        <div className="flex-1">
+                          <p className={`font-medium ${
+                            animationStep > index ? "text-white" : "text-gray-400"
+                          }`}>
+                            Layer {layer.id}: {layer.name}
+                          </p>
+                          <p className="text-sm text-gray-500">{layer.description}</p>
+                        </div>
+                        {animationStep > index && (
+                          <CheckCircle className="w-5 h-5 text-green-400" />
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Results Section */}
+          <div className="order-1 lg:order-2 space-y-6">
+            {results ? (
+              <>
+                {/* Tab Navigation */}
+                <div className="flex gap-2 mb-6">
+                  <button
+                    onClick={() => setActiveTab('before')}
+                    className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                      activeTab === 'before'
+                        ? "bg-zinc-800 text-white border border-zinc-600"
+                        : "text-gray-400 hover:text-white"
+                    }`}
+                  >
+                    Before
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('after')}
+                    className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                      activeTab === 'after'
+                        ? "bg-zinc-800 text-white border border-zinc-600"
+                        : "text-gray-400 hover:text-white"
+                    }`}
+                  >
+                    After
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('layers')}
+                    className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                      activeTab === 'layers'
+                        ? "bg-zinc-800 text-white border border-zinc-600"
+                        : "text-gray-400 hover:text-white"
+                    }`}
+                  >
+                    Layer Details
+                  </button>
+                </div>
+
+                {/* Tab Content */}
+                {activeTab === 'before' && (
+                  <div className="bg-gray-800/30 border border-gray-700 rounded-xl p-6">
+                    <h4 className="text-lg font-semibold text-white mb-4">Original Code</h4>
+                    <div className="bg-black/50 rounded p-4 text-sm text-gray-300 font-mono overflow-x-auto">
+                      <pre className="whitespace-pre-wrap">{currentCode}</pre>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'after' && (
+                  <div className="bg-gray-800/30 border border-gray-700 rounded-xl p-6">
+                    <h4 className="text-lg font-semibold text-white mb-4">Transformed Code</h4>
+                    <div className="bg-black/50 rounded p-4 text-sm text-green-300 font-mono overflow-x-auto">
+                      <pre className="whitespace-pre-wrap">{results.transformed}</pre>
+                    </div>
+                    {results.fixResult && results.fixResult.appliedFixes && (
+                      <div className="mt-4 p-4 bg-green-500/10 border border-green-500/30 rounded-lg">
+                        <p className="text-green-400 font-medium mb-2">
+                          ✓ {results.fixResult.appliedFixes.length} fixes applied successfully
+                        </p>
+                        <p className="text-sm text-gray-400">
+                          Processing time: {results.analysis.processingTime}ms
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {activeTab === 'layers' && (
+                  <div className="space-y-6">
+                    {/* Issues Summary */}
+                    <div className="bg-gray-800/30 border border-gray-700 rounded-xl p-6">
+                      <h4 className="text-lg font-semibold text-white mb-4">Real Engine Detected Issues</h4>
+                      <div className="space-y-3">
+                        {results.analysis.detectedIssues.map((issue, index) => (
+                          <div
+                            key={index}
+                            className="flex items-start gap-3 p-3 bg-gray-800/50 rounded-lg border border-gray-700"
+                          >
+                            <div className={`mt-1 ${getSeverityColor(issue.severity)}`}>
+                              {getSeverityIcon(issue.severity)}
+                            </div>
+                            <div className="flex-1">
+                              <p className="text-white font-medium">{issue.description}</p>
+                              <p className="text-sm text-gray-400">
+                                Fixed by Layer {issue.fixedByLayer} • {issue.severity} severity
+                                {issue.ruleId && ` • Rule: ${issue.ruleId}`}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                        {results.analysis.detectedIssues.length === 0 && (
+                          <div className="text-center text-gray-400 py-4">
+                            No issues detected - code is already optimized!
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Layer Improvements */}
+                    <div className="bg-gray-800/30 border border-gray-700 rounded-xl p-6">
+                      <h4 className="text-lg font-semibold text-white mb-4">Real Engine Layer Results</h4>
+                      <div className="space-y-4">
+                        {results.layers.map((layer) => {
+                          const layerData = layerInfo.find(l => l.id === layer.layerId);
+                          const IconComponent = getLayerIcon(layer.layerId);
+                          const color = getLayerColor(layer.layerId);
+                          
+                          return (
+                            <div
+                              key={layer.layerId}
+                              className="p-4 bg-gray-800/50 rounded-lg border border-gray-700"
+                            >
+                              <div className="flex items-center gap-3 mb-3">
+                                <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
+                                  <IconComponent className={`w-4 h-4 ${color}`} />
+                                </div>
+                                <div>
+                                  <p className="text-white font-semibold">
+                                    Layer {layer.layerId}: {layerData?.name || `Layer ${layer.layerId}`}
+                                  </p>
+                                  <p className="text-sm text-gray-400">
+                                    {layerData?.description || 'Layer processing'}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="space-y-2">
+                                {layer.improvements.length > 0 ? (
+                                  layer.improvements.map((improvement, index) => (
+                                    <div key={index} className="flex items-center gap-2 text-sm text-green-400">
+                                      <CheckCircle className="w-4 h-4" />
+                                      {improvement}
+                                    </div>
+                                  ))
+                                ) : (
+                                  <div className="text-sm text-gray-500">
+                                    No improvements needed for this layer
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="bg-gray-800/30 border border-gray-700 rounded-xl p-6 h-96 flex items-center justify-center">
+                <div className="text-center text-gray-400">
+                  <Code className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                  <p className="text-lg font-medium">Enter your code and analyze with the real engine</p>
+                  <p className="text-sm">The 7-layer engine will transform your code automatically</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Call to Action */}
+        <div className="text-center mt-16">
+          <div className="bg-gradient-to-r from-zinc-800 to-black backdrop-blur-xl border-2 border-black rounded-3xl p-16 md:p-24">
+            <h3 className="text-3xl md:text-5xl font-black mb-6 tracking-tight text-white">
+              Ready to Transform Your Codebase?
+            </h3>
+            <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-4xl mx-auto font-medium">
+              Join thousands of developers who are saving hours of manual work with automated code fixes.
+              Try NeuroLint on your own codebase today.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <a
+                href="https://app.neurolint.dev/dashboard"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-10 py-5 bg-white text-black font-black rounded-2xl hover:bg-gray-100 transition-all duration-300 text-lg shadow-2xl hover:scale-105"
+              >
+                Start Free Scan
+              </a>
+              <a
+                href="https://app.neurolint.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-10 py-5 bg-black/60 text-white font-black rounded-2xl border-2 border-black hover:bg-black/80 transition-all duration-300 text-lg backdrop-blur-xl hover:scale-105 shadow-lg"
+              >
+                View Demo
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+} 

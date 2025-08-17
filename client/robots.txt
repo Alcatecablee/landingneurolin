@@ -1,3 +1,13 @@
 User-agent: *
 Allow: /
+
+# Sitemaps
 Sitemap: https://neurolint.dev/sitemap.xml
+Sitemap: https://app.neurolint.dev/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Disallow private areas
+Disallow: /private/
+Disallow: /internal/

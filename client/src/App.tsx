@@ -2,6 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "next-themes";
+import { Analytics } from "@vercel/analytics";
 import { useState, useEffect } from "react";
 import Index from "./pages/Index";
 import { NotFound } from "./components/NotFound";
@@ -65,6 +66,7 @@ const App = () => {
         />
 
         {renderContent()}
+        <Analytics />
       </TooltipProvider>
     </ThemeProvider>
   );

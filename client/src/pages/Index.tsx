@@ -297,8 +297,14 @@ export default function Index() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8">
             {[
+              {
+                title: "Next.js 15.5 Migration",
+                description:
+                  "Automatically migrates your codebase to Next.js 15.5 with Server Actions enhancement, Metadata API modernization, and Turbopack integration.",
+                layer: "NEW",
+              },
               {
                 title: "Configuration Layer",
                 description:
@@ -344,6 +350,7 @@ export default function Index() {
             ].map((feature, index) => {
               const getGlowClass = () => {
                 const colors = [
+                  "red",
                   "blue",
                   "purple",
                   "green",
@@ -368,6 +375,8 @@ export default function Index() {
                   return `glow-border glow-border-hover glow-border-${color}`;
                 if (index === 6)
                   return `glow-border glow-border-delay-3 glow-border-${color}`;
+                if (index === 7)
+                  return `glow-border glow-border-hover glow-border-${color}`;
                 return "";
               };
 

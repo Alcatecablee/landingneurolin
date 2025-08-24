@@ -25,23 +25,23 @@ function TypingTerminal() {
   const terminalLines = [
     "$ npm install -g @neurolint/cli",
     "Installing NeuroLint CLI...",
-    "✓ Installation complete",
-    "$ neurolint scan my-react-app",
-    "NeuroLint - 7-Layer Auto-Fix Engine",
-    "Running 7-layer analysis...",
-    "✓ Layer 1: Configuration (TypeScript, Next.js configs)",
-    "✓ Layer 2: Pattern Standardization (HTML entities, console cleanup)",
-    "✓ Layer 3: Component Modernization (UI components, accessibility)",
-    "✓ Layer 4: Hydration & SSR Safety (window/document guards)",
-    "✓ Layer 5: Next.js App Router (use client, React imports)",
-    "✓ Layer 6: Testing & Validation (error boundaries, prop types)",
-    "✓ Layer 7: Adaptive Pattern Learning (learned transformations)",
-    "✓ Found 47 issues to auto-fix",
-    "$ neurolint fix --all",
-    "Auto-fixing with rule-based precision...",
-    "✓ Fixed 44 issues automatically",
-    "✓ 3 issues require manual review",
-    "✓ Auto-fix complete - 0 breaking changes",
+    "[SUCCESS] Installation complete",
+    "$ neurolint analyze . --verbose",
+    "[PROCESSING] Analyzing files...",
+    "[INFO] Found 47 files to analyze",
+    "[SUCCESS] Layer 1: Configuration fixes identified",
+    "[SUCCESS] Layer 2: Pattern standardization completed",
+    "[SUCCESS] Layer 3: Component modernization applied",
+    "[SUCCESS] Layer 4: Hydration & SSR safety checks",
+    "[SUCCESS] Layer 5: Next.js App Router optimization",
+    "[SUCCESS] Layer 6: Testing & validation enhanced",
+    "[SUCCESS] Layer 7: Adaptive pattern learning active",
+    "[COMPLETE] Analysis completed - 47 issues found",
+    "$ neurolint fix . --all-layers --dry-run",
+    "[PROCESSING] Applying fixes...",
+    "[SUCCESS] Fixed 44 issues automatically",
+    "[WARNING] 3 issues require manual review",
+    "[COMPLETE] Auto-fix completed - 0 breaking changes",
   ];
 
   useEffect(() => {
@@ -85,6 +85,7 @@ function TypingTerminal() {
           <span className="text-yellow-400 ml-2">@neurolint/cli</span>
         </div>
       );
+
     } else if (line.startsWith("$ neurolint login")) {
       return (
         <div className="flex">
@@ -111,6 +112,16 @@ function TypingTerminal() {
           <span className="text-cyan-400 ml-2">--list</span>
         </div>
       );
+    } else if (line.startsWith("[SUCCESS]")) {
+      return <div className="text-green-400 pl-2">{line}</div>;
+    } else if (line.startsWith("[WARNING]")) {
+      return <div className="text-yellow-400 pl-2">{line}</div>;
+    } else if (line.startsWith("[INFO]")) {
+      return <div className="text-blue-400 pl-2">{line}</div>;
+    } else if (line.startsWith("[PROCESSING]")) {
+      return <div className="text-cyan-400 pl-2">{line}</div>;
+    } else if (line.startsWith("[COMPLETE]")) {
+      return <div className="text-green-400 pl-2">{line}</div>;
     } else if (line.startsWith("✓")) {
       return <div className="text-green-400 pl-2">{line}</div>;
     } else if (line.startsWith("⚠")) {
@@ -218,6 +229,8 @@ export function CLISection() {
     window.open("https://www.npmjs.com/package/@neurolint/cli", "_blank", "noopener,noreferrer");
   };
 
+
+
   return (
     <section className="py-24 px-4" role="region" aria-labelledby="cli-heading">
       <div className="max-w-7xl mx-auto">
@@ -257,6 +270,7 @@ export function CLISection() {
                     </>
                   )}
                 </button>
+
                 <button
                   onClick={handleNpmClick}
                   className="border-2 border-zinc-800 text-white px-8 py-4 rounded-xl font-bold text-lg hover:border-zinc-600 transition-all duration-300 flex items-center gap-3"

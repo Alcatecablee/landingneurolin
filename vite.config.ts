@@ -37,13 +37,13 @@ export default defineConfig({
   },
   // Development server optimizations
   server: {
-    port: 3000,
-    host: true,
+    port: 5000,
+    host: '0.0.0.0',
   },
   // Preview server for testing builds
   preview: {
-    port: 4173,
-    host: true,
+    port: 5000,
+    host: '0.0.0.0',
   },
   // Optimize dependencies
   optimizeDeps: {

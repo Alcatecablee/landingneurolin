@@ -19,14 +19,14 @@ export interface AppConfig {
 // Default configuration
 const defaultConfig: AppConfig = {
   api: {
-    baseUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api',
+    baseUrl: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
     timeout: 30000, // 30 seconds
     retries: 3,
   },
   features: {
     demo: true,
-    analytics: process.env.NODE_ENV === 'production',
-    errorReporting: process.env.NODE_ENV === 'production',
+    analytics: import.meta.env.MODE === 'production',
+    errorReporting: import.meta.env.MODE === 'production',
   },
   layers: {
     count: 7,
@@ -56,16 +56,16 @@ const getConfig = (): AppConfig => {
   const config = { ...defaultConfig };
 
   // Development overrides
-  if (process.env.NODE_ENV === 'development') {
-    config.api.baseUrl = 'http://localhost:3000/api';
+  if (import.meta.env.MODE === 'development') {
+    config.api.baseUrl = 'http://localhost:5000/api';
     config.features.demo = true;
     config.features.analytics = false;
     config.features.errorReporting = false;
   }
 
   // Production overrides
-  if (process.env.NODE_ENV === 'production') {
-    config.api.baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://app.neurolint.dev/api';
+  if (import.meta.env.MODE === 'production') {
+    config.api.baseUrl = import.meta.env.VITE_API_URL || 'https://app.neurolint.dev/api';
     config.features.demo = false;
     config.features.analytics = true;
     config.features.errorReporting = true;

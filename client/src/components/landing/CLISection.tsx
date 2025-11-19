@@ -76,8 +76,8 @@ function TypingTerminal() {
   }, [currentLineIndex, currentCharIndex, terminalLines]);
 
   const renderLine = (line: string) => {
-    if (line.startsWith("$ ")) {
-      // Command line with syntax highlighting
+    if (line.startsWith("$ npm install")) {
+      // npm install command with syntax highlighting
       return (
         <div className="flex">
           <span className="text-green-400">$</span>
@@ -86,31 +86,18 @@ function TypingTerminal() {
           <span className="text-yellow-400 ml-2">@neurolint/cli</span>
         </div>
       );
-
-    } else if (line.startsWith("$ neurolint login")) {
+    } else if (line.startsWith("$ neurolint")) {
+      // neurolint commands with syntax highlighting
+      const parts = line.substring(2).split(" ");
       return (
         <div className="flex">
           <span className="text-green-400">$</span>
-          <span className="text-blue-400 ml-2">neurolint</span>
-          <span className="text-white ml-2">login</span>
-          <span className="text-cyan-400 ml-2">--enterprise</span>
-        </div>
-      );
-    } else if (line.startsWith("$ neurolint enterprise")) {
-      return (
-        <div className="flex">
-          <span className="text-green-400">$</span>
-          <span className="text-blue-400 ml-2">neurolint</span>
-          <span className="text-purple-400 ml-2">enterprise</span>
-        </div>
-      );
-    } else if (line.startsWith("$ neurolint team")) {
-      return (
-        <div className="flex">
-          <span className="text-green-400">$</span>
-          <span className="text-blue-400 ml-2">neurolint</span>
-          <span className="text-purple-400 ml-2">team</span>
-          <span className="text-cyan-400 ml-2">--list</span>
+          <span className="text-blue-400 ml-2">{parts[0]}</span>
+          {parts.slice(1).map((part, i) => (
+            <span key={i} className={i === 0 ? "text-cyan-400 ml-2" : "text-white ml-2"}>
+              {part}
+            </span>
+          ))}
         </div>
       );
     } else if (line.startsWith("[SUCCESS]")) {
@@ -127,11 +114,7 @@ function TypingTerminal() {
       return <div className="text-green-400 pl-2">{line}</div>;
     } else if (line.startsWith("⚠")) {
       return <div className="text-yellow-400 pl-2">{line}</div>;
-    } else if (
-      line === "NeuroLint CLI" ||
-      line === "NeuroLint Enterprise Features" ||
-      line === "Teams:"
-    ) {
+    } else if (line === "NeuroLint CLI") {
       return <div className="text-white font-bold pl-2">{line}</div>;
     } else if (line.startsWith("●")) {
       return (

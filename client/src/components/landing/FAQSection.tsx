@@ -168,8 +168,8 @@ export const FAQSection: React.FC = () => {
             </h2>
 
             <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto font-medium">
-              Get answers to common questions about NeuroLint's React & Next.js
-              modernization, migration workflows, pricing, and team features.
+              Get answers to common questions about NeuroLint's free CLI tool,
+              safety features, and how it fixes React & Next.js bugs automatically.
             </p>
           </div>
 

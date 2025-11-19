@@ -77,8 +77,9 @@
     
     <!-- Performance and Security -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://*.replit.dev https://*.repl.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://va.vercel-scripts.com https://*.replit.dev https://*.repl.co wss://*.replit.dev wss://*.repl.co;" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://*.replit.dev https://*.repl.co https://cdn.builder.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: https://cdn.builder.io; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://va.vercel-scripts.com https://*.replit.dev https://*.repl.co https://app.neurolint.dev wss://va.vercel-scripts.com wss://*.replit.dev wss://*.repl.co; frame-ancestors 'none';" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
     <meta http-equiv="Referrer-Policy" content="origin-when-cross-origin" />
     
     <!-- Preconnect for Performance -->

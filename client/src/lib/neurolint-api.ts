@@ -101,7 +101,7 @@ export interface EngineStatus {
   };
 }
 
-import { appConfig, getApiUrl } from './config';
+import { appConfig } from './config';
 
 class NeuroLintAPI {
   private baseUrl: string;

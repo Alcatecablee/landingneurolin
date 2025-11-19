@@ -57,7 +57,8 @@ const getConfig = (): AppConfig => {
 
   // Development overrides
   if (import.meta.env.MODE === 'development') {
-    config.api.baseUrl = 'http://localhost:5000/api';
+    // In development, use external API since this is a frontend-only landing page
+    config.api.baseUrl = import.meta.env.VITE_API_URL || 'https://app.neurolint.dev/api';
     config.features.demo = true;
     config.features.analytics = false;
     config.features.errorReporting = false;

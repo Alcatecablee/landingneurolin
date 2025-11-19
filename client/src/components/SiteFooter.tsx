@@ -10,17 +10,17 @@ export function SiteFooter() {
             <ul className="space-y-2">
               <li>
                 <a
-                  href="https://app.neurolint.dev/dashboard"
+                  href="https://www.npmjs.com/package/@neurolint/cli"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-zinc-400 hover:text-white transition-colors"
                 >
-                  Dashboard
+                  CLI Tool (npm)
                 </a>
               </li>
               <li>
                 <a
-                  href="https://app.neurolint.dev/docs"
+                  href="https://www.npmjs.com/package/@neurolint/cli?activeTab=readme"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-zinc-400 hover:text-white transition-colors"
@@ -30,69 +30,64 @@ export function SiteFooter() {
               </li>
               <li>
                 <a
-                  href="https://app.neurolint.dev/api-docs"
+                  href="https://app.neurolint.dev"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-zinc-400 hover:text-white transition-colors"
                 >
-                  API Reference
+                  Demo
                 </a>
               </li>
               <li>
                 <a
-                  href="https://app.neurolint.dev/pricing"
+                  href="https://github.com/neurolint/cli"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-zinc-400 hover:text-white transition-colors"
                 >
-                  Pricing
+                  GitHub
                 </a>
               </li>
             </ul>
           </div>
 
-          {/* Developer Tools */}
+          {/* CLI Commands */}
           <div>
-            <h3 className="text-white font-bold text-lg mb-4">Developer Tools</h3>
+            <h3 className="text-white font-bold text-lg mb-4">Getting Started</h3>
             <ul className="space-y-2">
               <li>
+                <code className="text-zinc-400 text-sm font-mono">
+                  npm install -g @neurolint/cli
+                </code>
+              </li>
+              <li className="pt-2">
                 <a
-                  href="https://www.npmjs.com/package/@neurolint/cli"
+                  href="https://www.npmjs.com/package/@neurolint/cli?activeTab=readme"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-zinc-400 hover:text-white transition-colors"
                 >
-                  CLI Tool
+                  Installation Guide
                 </a>
               </li>
               <li>
                 <a
-                  href="https://marketplace.visualstudio.com/items?itemName=neurolint.neurolint-vscode"
+                  href="https://www.npmjs.com/package/@neurolint/cli?activeTab=readme#usage"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-zinc-400 hover:text-white transition-colors"
                 >
-                  VS Code Extension
+                  Usage Examples
                 </a>
               </li>
               <li>
                 <a
-                  href="https://app.neurolint.dev/docs#cli"
+                  href="https://www.npmjs.com/package/@neurolint/cli?activeTab=code"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-zinc-400 hover:text-white transition-colors"
                 >
-                  CLI Documentation
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://app.neurolint.dev/docs#api"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-zinc-400 hover:text-white transition-colors"
-                >
-                  API Integration
+                  Source Code
                 </a>
               </li>
             </ul>
@@ -114,12 +109,12 @@ export function SiteFooter() {
               </li>
               <li>
                 <a
-                  href="https://app.neurolint.dev/docs#layers"
+                  href="https://www.npmjs.com/package/@neurolint/cli?activeTab=readme#how-it-works"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-zinc-400 hover:text-white transition-colors"
                 >
-                  7-Layer Engine Guide
+                  How It Works
                 </a>
               </li>
               <li>
@@ -199,14 +194,14 @@ export function SiteFooter() {
           <span>All rights reserved.</span>
         </div>
         <div className="flex items-center gap-4 text-sm">
-            <span className="text-zinc-400">Ready to modernize your code?</span>
+            <span className="text-zinc-400">Ready to fix your code?</span>
           <a
-              href="https://app.neurolint.dev/dashboard"
+              href="https://www.npmjs.com/package/@neurolint/cli"
               target="_blank"
               rel="noopener noreferrer"
             className="text-white font-medium hover:text-zinc-300 transition-colors px-3 py-1 bg-zinc-800/50 hover:bg-zinc-800 rounded-full"
           >
-              Get Started Free
+              Install Free CLI
           </a>
           </div>
         </div>

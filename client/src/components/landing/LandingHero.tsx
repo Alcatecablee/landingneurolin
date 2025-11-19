@@ -23,23 +23,25 @@ export function LandingHero() {
         id="hero-heading"
         className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl font-bold text-white text-center leading-tight mb-6 tracking-tight"
       >
-        Advanced Code <br className="hidden xs:block" />
-        <span className="text-white">Transformation Platform</span>
+        Fix React & Next.js <br className="hidden xs:block" />
+        <span className="text-white">Bugs Before They Ship</span>
       </h1>
-      <p className="text-lg sm:text-xl text-gray-300 font-medium mb-12 max-w-2xl text-center px-4 leading-relaxed">
-        Currently in beta with AI-ready architecture. Advanced code analysis and
-        transformation using proven rule-based techniques.
+      <p className="text-lg sm:text-xl text-gray-300 font-medium mb-8 max-w-2xl text-center px-4 leading-relaxed">
+        No AI. No guesswork. Just working code.
         <br />
-        AI integration planned for future releases.
+        Deterministic fixes for hydration crashes, missing keys, ESLint errors & more.
+      </p>
+      <p className="text-base sm:text-lg text-zinc-400 font-medium mb-12 max-w-xl text-center px-4">
+        100% Free • No API Keys • Automatic Backups
       </p>
       <Button
-        className="w-full max-w-sm py-4 px-8 text-lg font-bold rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-white hover-lift shadow-xl hover:shadow-2xl transition-all duration-300 touch-manipulation focus:ring-2 focus:ring-zinc-600 focus:ring-offset-2 focus:ring-offset-black"
-        onClick={() => navigate("/app")}
+        className="w-full max-w-sm py-4 px-8 text-lg font-bold rounded-xl bg-white hover:bg-zinc-100 text-black hover-lift shadow-xl hover:shadow-2xl transition-all duration-300 touch-manipulation focus:ring-2 focus:ring-zinc-400 focus:ring-offset-2 focus:ring-offset-black"
+        onClick={() => window.open("https://www.npmjs.com/package/@neurolint/cli", "_blank")}
         size="lg"
-        aria-label="Try NeuroLint Free - Start analyzing your code"
+        aria-label="Install NeuroLint CLI from npm - 100% Free"
       >
         <ArrowRight className="mr-3 w-5 h-5" aria-hidden="true" />
-        Try NeuroLint Free
+        Install Free CLI
       </Button>
     </section>
   );

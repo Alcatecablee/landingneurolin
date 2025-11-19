@@ -65,24 +65,14 @@ export const SiteHeader = () => {
   // Navigation items with proper cross-linking
   const navigationItems = [
     {
-      label: "Dashboard",
-      href: "https://app.neurolint.dev/dashboard",
-      description: "Access your NeuroLint dashboard"
-    },
-    {
       label: "Documentation",
-      href: "https://app.neurolint.dev/docs",
-      description: "View comprehensive documentation"
+      href: "https://www.npmjs.com/package/@neurolint/cli",
+      description: "View CLI documentation on npm"
     },
     {
       label: "API Docs",
-      href: "https://app.neurolint.dev/api-docs",
-      description: "API reference and integration guides"
-    },
-    {
-      label: "Pricing",
-      href: "https://app.neurolint.dev/pricing",
-      description: "View pricing plans and features"
+      href: "https://www.npmjs.com/package/@neurolint/cli?activeTab=readme",
+      description: "API reference and usage guides"
     }
   ];
 
@@ -149,7 +139,7 @@ export const SiteHeader = () => {
               ))}
             </nav>
 
-            {/* Demo, Pricing and Get Started Buttons */}
+            {/* Demo and Install Buttons */}
             <div className="flex items-center space-x-3">
               <a
                 href="https://app.neurolint.dev/"
@@ -161,22 +151,13 @@ export const SiteHeader = () => {
                 Demo
               </a>
               <a
-                href="https://app.neurolint.dev/pricing"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden md:inline-flex px-4 py-2 text-sm font-medium text-zinc-300 hover:text-white hover:bg-zinc-800/70 rounded-lg transition-all duration-300 transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black interactive btn-smooth"
-                aria-label="View NeuroLint pricing plans"
-              >
-                Pricing
-              </a>
-              <a
-                href="https://app.neurolint.dev/dashboard"
+                href="https://www.npmjs.com/package/@neurolint/cli"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-4 py-2 bg-white text-black font-semibold rounded-lg hover:bg-zinc-100 active:bg-zinc-200 transition-all duration-300 text-sm transform hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black shadow-lg hover:shadow-xl interactive btn-smooth"
-                aria-label="Get started with NeuroLint"
+                aria-label="Install NeuroLint CLI from npm"
               >
-                Get Started
+                Install CLI
               </a>
             </div>
 
@@ -275,7 +256,7 @@ export const SiteHeader = () => {
                   </a>
                 ))}
 
-                {/* Demo, Pricing and Get Started Section in Mobile Menu */}
+                {/* Demo and Install Section in Mobile Menu */}
                 <div className="border-t border-zinc-800/50 mt-4 pt-4 px-4 space-y-3">
                   <a
                     href="https://app.neurolint.dev/"
@@ -288,24 +269,14 @@ export const SiteHeader = () => {
                     Demo
                   </a>
                   <a
-                    href="https://app.neurolint.dev/pricing"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="block w-full px-6 py-3 text-center text-zinc-300 hover:text-white hover:bg-zinc-800/70 rounded-lg transition-all duration-300 mobile-nav-item interactive"
-                    aria-label="View NeuroLint pricing plans"
-                  >
-                    Pricing
-                  </a>
-                  <a
-                    href="https://app.neurolint.dev/dashboard"
+                    href="https://www.npmjs.com/package/@neurolint/cli"
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setIsMenuOpen(false)}
                     className="block w-full px-6 py-3 text-center bg-white text-black font-medium rounded-lg hover:bg-gray-100 transition-all duration-300 mobile-nav-item interactive"
-                    aria-label="Get started with NeuroLint"
+                    aria-label="Install NeuroLint CLI from npm"
                   >
-                    Get Started
+                    Install CLI
                   </a>
                 </div>
               </nav>

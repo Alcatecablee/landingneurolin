@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { FAQSection } from "@/components/landing/FAQSection";
 import { CLISection } from "@/components/landing/CLISection";
-import { VSCodeSection } from "@/components/landing/VSCodeSection";
 import { ComprehensiveDemoSection } from "@/components/landing/ComprehensiveDemoSection";
 
 import {
@@ -166,9 +165,9 @@ export default function Index() {
               <span className="text-white font-black">
                 actually fix your code
               </span>
-              . Rule-based 7-layer engine (not AI) with{" "}
+              . Rule-based transformations (not AI) with{" "}
               <span className="text-white font-black">
-                95% accuracy in seconds, not hours
+                deterministic fixes in seconds
               </span>
               .
             </p>
@@ -176,13 +175,13 @@ export default function Index() {
 
           <div className="flex flex-col sm:flex-row gap-4 md:gap-6 lg:gap-8 justify-center animate-slide-in-up animate-delay-700">
                           <a
-                href="https://app.neurolint.dev/dashboard"
+                href="https://www.npmjs.com/package/@neurolint/cli"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative px-6 md:px-8 lg:px-10 py-3 md:py-4 lg:py-5 bg-white text-black font-black rounded-lg md:rounded-xl lg:rounded-2xl hover:bg-gray-100 active:bg-gray-200 transition-all duration-300 cubic-bezier(0.4, 0, 0.2, 1) flex items-center justify-center gap-2 md:gap-3 text-base md:text-lg lg:text-xl shadow-2xl hover:shadow-white/30 hover:scale-105 active:scale-95 focus-visible:scale-105 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30 focus-visible:ring-offset-4 focus-visible:ring-offset-black touch-manipulation interactive min-h-[48px] md:min-h-[56px]"
-                aria-label="Run free code scan"
+                aria-label="Install NeuroLint CLI - 100% Free"
               >
-                Run Free Code Scan
+                Install Free CLI
                 <svg
                   className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-transform duration-300"
                   fill="none"
@@ -247,7 +246,7 @@ export default function Index() {
               ? 'opacity-100 translate-y-0'
               : 'opacity-0 translate-y-10'
           }`}>
-            Experience the 7-layer engine transforming your code in real-time
+            Watch NeuroLint automatically fix hydration crashes, missing keys, and ESLint errors
           </p>
           <a
             href="#comprehensive-demo"
@@ -286,14 +285,14 @@ export default function Index() {
                 ? 'opacity-100 translate-y-0'
                 : 'opacity-0 translate-y-10'
             }`}>
-              7-Layer Auto-Fix Engine with 95% Accuracy
+              Problems We Fix Automatically
             </h2>
             <p className={`text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto font-medium transition-all duration-1000 delay-400 transform ${
               featuresSectionInView
                 ? 'opacity-100 translate-y-0'
                 : 'opacity-0 translate-y-10'
             }`}>
-              Rule-based transformations (not AI) that automatically fix problems with proven accuracy
+              Rule-based transformations (not AI) that fix real bugs in your React & Next.js code
             </p>
           </div>
 
@@ -455,7 +454,7 @@ export default function Index() {
               {
                 tool: "SAST Tools",
                 what: "Security analysis",
-                you: "7-layer analysis + auto-fixes",
+                you: "Comprehensive analysis + auto-fixes",
                 icon: CheckCircle,
               },
             ].map((item, index) => (
@@ -507,21 +506,21 @@ export default function Index() {
             {[
               {
                 step: "01",
-                title: "Connect Your Project",
+                title: "Install",
                 description:
-                  "Connect via GitHub integration or upload your React/Next.js project - no configuration needed.",
+                  "npm install -g @neurolint/cli - One command to install the free CLI tool globally",
               },
               {
                 step: "02",
-                title: "Run Auto-Fix Engine",
+                title: "Analyze",
                 description:
-                  "Our engine automatically fixes accessibility issues, React patterns, and Next.js configurations in seconds.",
+                  "neurolint analyze src/ - Scan your codebase and detect hydration crashes, missing keys, and ESLint errors",
               },
               {
                 step: "03",
-                title: "Review Applied Fixes",
+                title: "Fix",
                 description:
-                  "See exactly what was fixed with before/after comparisons and rollback any changes instantly.",
+                  "neurolint fix --all-layers - Apply automatic fixes with built-in backups. Rollback anytime if needed.",
               },
             ].map((item, index) => (
               <div key={index} className={`group relative transition-all duration-1000 transform ${
@@ -556,14 +555,7 @@ export default function Index() {
         <CLISection />
       </div>
 
-      {/* VSCode Section */}
-      <div ref={vscodeSectionRef} className={`transition-all duration-1000 transform ${
-        vscodeSectionInView
-          ? 'opacity-100 translate-y-0'
-          : 'opacity-0 translate-y-20'
-      }`}>
-        <VSCodeSection />
-      </div>
+      {/* VSCode Section - Removed: CLI-only now */}
 
       {/* FAQ Section */}
       <div ref={faqSectionRef} className={`transition-all duration-1000 transform ${
@@ -587,14 +579,14 @@ export default function Index() {
                 ? 'opacity-100 translate-y-0'
                 : 'opacity-0 translate-y-10'
             }`}>
-              Ready to Auto-Fix Your React & Next.js Code?
+              Stop Shipping Bugs. Start Using NeuroLint.
             </h2>
             <p className={`text-xl md:text-2xl text-gray-300 mb-16 max-w-4xl mx-auto font-medium transition-all duration-1000 delay-400 transform ${
               finalCtaSectionInView
                 ? 'opacity-100 translate-y-0'
                 : 'opacity-0 translate-y-10'
             }`}>
-              Join teams who are saving hours of manual work with automated code fixes
+              100% Free CLI. No registration required. Automatic backups included.
             </p>
             <div className={`flex flex-col sm:flex-row gap-6 justify-center transition-all duration-1000 delay-600 transform ${
               finalCtaSectionInView
@@ -602,12 +594,12 @@ export default function Index() {
                 : 'opacity-0 translate-y-20'
             }`}>
               <a
-                href="https://app.neurolint.dev/dashboard"
+                href="https://www.npmjs.com/package/@neurolint/cli"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-10 py-5 bg-white text-black font-black rounded-2xl hover:bg-gray-100 transition-all duration-300 text-lg shadow-2xl hover:scale-105"
               >
-                Start Free Scan
+                Install Free CLI
               </a>
               <a
                 href="https://app.neurolint.dev"

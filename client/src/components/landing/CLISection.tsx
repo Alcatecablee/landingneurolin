@@ -25,23 +25,24 @@ function TypingTerminal() {
   const terminalLines = [
     "$ npm install -g @neurolint/cli",
     "Installing NeuroLint CLI...",
-    "[SUCCESS] Installation complete",
-    "$ neurolint analyze . --verbose",
+    "[SUCCESS] Installation complete - 100% Free!",
+    "$ neurolint analyze src/",
     "[PROCESSING] Analyzing files...",
-    "[INFO] Found 47 files to analyze",
-    "[SUCCESS] Layer 1: Configuration fixes identified",
-    "[SUCCESS] Layer 2: Pattern standardization completed",
-    "[SUCCESS] Layer 3: Component modernization applied",
-    "[SUCCESS] Layer 4: Hydration & SSR safety checks",
-    "[SUCCESS] Layer 5: Next.js App Router optimization",
-    "[SUCCESS] Layer 6: Testing & validation enhanced",
-    "[SUCCESS] Layer 7: Adaptive pattern learning active",
-    "[COMPLETE] Analysis completed - 47 issues found",
-    "$ neurolint fix . --all-layers --dry-run",
-    "[PROCESSING] Applying fixes...",
-    "[SUCCESS] Fixed 44 issues automatically",
-    "[WARNING] 3 issues require manual review",
-    "[COMPLETE] Auto-fix completed - 0 breaking changes",
+    "[INFO] Found 47 React & Next.js files",
+    "[FOUND] 12 hydration crashes (window is not defined)",
+    "[FOUND] 18 missing React keys in .map() loops",
+    "[FOUND] 8 ESLint errors blocking deploy",
+    "[FOUND] 5 accessibility issues (missing aria-labels)",
+    "[FOUND] 4 Next.js App Router migration issues",
+    "[COMPLETE] Analysis complete - 47 issues found",
+    "$ neurolint fix src/ --backup",
+    "[PROCESSING] Applying automatic fixes...",
+    "[SUCCESS] Fixed all 12 hydration crashes",
+    "[SUCCESS] Added 18 React keys automatically",
+    "[SUCCESS] Fixed 8 ESLint errors",
+    "[SUCCESS] Added 5 aria-labels for accessibility",
+    "[SUCCESS] Created automatic backup in .neurolint/backup",
+    "[COMPLETE] All fixes applied - 0 breaking changes",
   ];
 
   useEffect(() => {
@@ -239,11 +240,11 @@ export function CLISection() {
             id="cli-heading"
             className="text-5xl md:text-7xl font-black mb-8 tracking-tight text-white"
           >
-            7-Layer Auto-Fix CLI
+            100% Free CLI Tool
           </h2>
           <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto font-medium">
-            Rule-based auto-fixing engine (not AI) that transforms React & Next.js code with 95% accuracy. 
-            No suggestions - just automatic fixes.
+            Rule-based transformations (not AI) that fix hydration crashes, missing keys, and ESLint errors. 
+            No registration required. Automatic backups included.
           </p>
         </div>
 

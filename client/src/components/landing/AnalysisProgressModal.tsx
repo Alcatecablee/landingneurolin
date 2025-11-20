@@ -62,31 +62,24 @@ interface LayerItemProps {
 }
 
 function LayerItem({ layer, isCompleted, isCurrent }: LayerItemProps) {
-  let containerClass = "bg-gray-800/50 border border-gray-700";
-  let iconClass = "bg-gray-700";
-  let textClass = "text-gray-400";
-
-  if (isCompleted) {
-    containerClass = "bg-green-500/10 border border-green-500/30";
-    iconClass = "bg-green-500/20";
-    textClass = "text-white";
-  } else if (isCurrent) {
-    containerClass = "bg-blue-500/10 border border-blue-500/30 animate-pulse";
-    iconClass = "bg-blue-500/20";
-    textClass = "text-blue-400";
-  }
+  const style: React.CSSProperties = {};
 
   return (
-    <div className={`flex items-center gap-4 p-4 rounded-xl transition-all duration-500 ${containerClass}`}>
-      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${iconClass}`}>
-        <div className={`flex items-center justify-center ${isCompleted ? "text-green-400" : ""}`}>
+    <div
+      className={isCompleted ? "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-green-500/10 border border-green-500/30" : isCurrent ? "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-blue-500/10 border border-blue-500/30 animate-pulse" : "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-gray-800/50 border border-gray-700"}
+      style={style}
+    >
+      <div
+        className={isCompleted ? "w-10 h-10 rounded-lg flex items-center justify-center bg-green-500/20" : isCurrent ? "w-10 h-10 rounded-lg flex items-center justify-center bg-blue-500/20" : "w-10 h-10 rounded-lg flex items-center justify-center bg-gray-700"}
+      >
+        <div className={isCompleted ? "flex items-center justify-center text-green-400" : "flex items-center justify-center"}>
           <LayerIcon layerId={layer.id} isSpinning={isCurrent} />
         </div>
       </div>
 
       <div className="flex-1">
         <div className="flex items-center gap-2 mb-1">
-          <p className={`font-semibold ${textClass}`}>
+          <p className={isCompleted ? "font-semibold text-white" : isCurrent ? "font-semibold text-blue-400" : "font-semibold text-gray-400"}>
             Layer {layer.id}: {layer.name}
           </p>
           {isCompleted && <CheckCircle className="w-4 h-4 text-green-400" />}

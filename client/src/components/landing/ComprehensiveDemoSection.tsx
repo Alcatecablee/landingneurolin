@@ -33,7 +33,7 @@ const SAMPLE_CODES = [
   {
     id: "react-component-issues",
     name: "React Component with Issues",
-    description: "Missing TypeScript types, console.log, missing key props",
+    description: "Missing keys, console.log, var declaration, missing aria-labels",
     code: `import React from 'react';
 
 function Button({ children, onClick }) {
@@ -48,21 +48,10 @@ function TodoList({ todos }) {
   return (
     <div>
       {todos.map(todo => (
-        <div key={todo.id}>
+        <div>
           <span>{todo.text}</span>
           <Button onClick={() => {
-            // Replace console.log with proper logging system
-            if (typeof window !== 'undefined') {
-              const event = new CustomEvent('logAction', {
-                detail: {
-                  action: 'delete_todo',
-                  todoId: todo.id,
-                  timestamp: new Date().toISOString()
-                }
-              });
-              window.dispatchEvent(event);
-            }
-            // TODO: Implement delete functionality
+            console.log('Deleting todo', todo.id);
           }}>
             Delete
           </Button>
@@ -76,14 +65,13 @@ function TodoList({ todos }) {
   {
     id: "nextjs-app-router",
     name: "Next.js App Router Component",
-    description: "SSR issues, localStorage access, missing error handling",
-    code: `'use client';
-
-import { useState, useEffect } from 'react';
+    description: "Missing use client directive, localStorage in SSR, unguarded window access",
+    code: `import { useState, useEffect } from 'react';
 
 export default function UserProfile({ userId }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const theme = localStorage.getItem('theme');
 
   useEffect(() => {
     fetch(\`/api/users/\${userId}\`)
@@ -100,9 +88,7 @@ export default function UserProfile({ userId }) {
     <div>
       <h1>{user.name}</h1>
       <p>{user.email}</p>
-      <button onClick={() => localStorage.setItem('theme', 'dark')}>
-        Set Dark Theme
-      </button>
+      <span>Theme: {theme}</span>
     </div>
   );
 }`,
@@ -111,32 +97,18 @@ export default function UserProfile({ userId }) {
   {
     id: "hydration-errors",
     name: "Hydration Error Component",
-    description: "Hydration mismatch issues with localStorage",
-    code: `'use client';
-
-import { useState, useEffect } from 'react';
-
-export default function ThemeProvider() {
-  const [theme, setTheme] = useState('light');
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    setTheme(savedTheme);
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return <div>Loading theme...</div>;
-  }
+    description: "Direct window/localStorage access causing hydration mismatch",
+    code: `export default function ThemeProvider() {
+  const [theme, setTheme] = React.useState('light');
+  const storedTheme = window.localStorage.getItem('theme') || 'light';
 
   return (
-    <div className={\`theme-\${theme}\`}>
-      <h1>Current theme: {theme}</h1>
+    <div className={\`theme-\${storedTheme}\`}>
+      <h1>Current theme: {storedTheme}</h1>
       <button onClick={() => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
         setTheme(newTheme);
-        localStorage.setItem('theme', newTheme);
+        window.localStorage.setItem('theme', newTheme);
       }}>
         Toggle Theme
       </button>
@@ -144,12 +116,132 @@ export default function ThemeProvider() {
   );
 }`,
     language: "tsx"
+  },
+  {
+    id: "pattern-layer",
+    name: "Pattern Layer Issues",
+    description: "HTML entities, var declarations, redundant code patterns",
+    code: `var userCount = 0;
+var activeUsers = [];
+
+function printMessage() {
+  var message = "Welcome &nbsp; to &nbsp; NeuroLint";
+  console.log(message);
+  alert('User count: ' + userCount);
+}
+
+function getUser(id) {
+  var found = false;
+  for (var i = 0; i < activeUsers.length; i++) {
+    if (activeUsers[i].id === id) {
+      found = true;
+      break;
+    }
+  }
+  return found;
+}`,
+    language: "js"
+  },
+  {
+    id: "accessibility-layer",
+    name: "Accessibility Issues",
+    description: "Missing aria-labels, alt text, and semantic HTML",
+    code: `function Button({ icon, onClick }) {
+  return (
+    <button onClick={onClick}>
+      <svg>{icon}</svg>
+    </button>
+  );
+}
+
+function Gallery({ images }) {
+  return (
+    <div>
+      {images.map((img, idx) => (
+        <img key={idx} src={img.url} />
+      ))}
+    </div>
+  );
+}
+
+function Navigation() {
+  return (
+    <div>
+      <button onClick={() => alert('Search')}>🔍</button>
+      <button onClick={() => alert('Menu')}>☰</button>
+    </div>
+  );
+}`,
+    language: "tsx"
+  },
+  {
+    id: "config-layer",
+    name: "Configuration Issues",
+    description: "Outdated tsconfig.json and package.json settings",
+    code: `{
+  "compilerOptions": {
+    "target": "ES2015",
+    "module": "commonjs",
+    "lib": ["ES2015"],
+    "jsx": "react",
+    "strict": false,
+    "esModuleInterop": false
+  }
+}`,
+    language: "json"
+  },
+  {
+    id: "data-fetching",
+    name: "Data Fetching Issues",
+    description: "Missing error handling, no proper loading states, hardcoded URLs",
+    code: `export default function ProductList() {
+  const [products, setProducts] = React.useState([]);
+
+  React.useEffect(() => {
+    const response = await fetch('http://api.example.com/products');
+    const data = await response.json();
+    setProducts(data);
+  });
+
+  return (
+    <ul>
+      {products.map(p => <li key={p.id}>{p.name}</li>)}
+    </ul>
+  );
+}`,
+    language: "tsx"
+  },
+  {
+    id: "modern-react",
+    name: "Legacy React Patterns",
+    description: "Class components, old hook patterns, missing TypeScript",
+    code: `class UserCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { user: null };
+  }
+
+  componentDidMount() {
+    fetch('/api/user/' + this.props.id)
+      .then(r => r.json())
+      .then(user => this.setState({ user }));
+  }
+
+  render() {
+    return (
+      <div>
+        <h2>{this.state.user?.name}</h2>
+        <p>{this.state.user?.email}</p>
+      </div>
+    );
+  }
+}`,
+    language: "tsx"
   }
 ];
 
 export function ComprehensiveDemoSection() {
-  const [customCode, setCustomCode] = useState('');
-  const [selectedSample, setSelectedSample] = useState<string | null>(null);
+  const [selectedSample, setSelectedSample] = useState<string | null>(SAMPLE_CODES[0].id);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [results, setResults] = useState<DemoResult | null>(null);
   const [activeTab, setActiveTab] = useState<'before' | 'after' | 'layers'>('before');
@@ -159,7 +251,7 @@ export function ComprehensiveDemoSection() {
   const [showProgressModal, setShowProgressModal] = useState(false);
   const [processingTime, setProcessingTime] = useState<number>(0);
 
-  const currentCode = customCode || (selectedSample ? SAMPLE_CODES.find(s => s.id === selectedSample)?.code : '');
+  const currentCode = selectedSample ? SAMPLE_CODES.find(s => s.id === selectedSample)?.code || '' : '';
 
   // Load layer information and engine status on component mount
   useEffect(() => {
@@ -403,59 +495,31 @@ export function ComprehensiveDemoSection() {
               {/* Tab Controls */}
               <div className="bg-gray-800/50 border-b border-gray-700">
                 <div className="flex">
-                  <button
-                    onClick={() => setSelectedSample(null)}
-                    className={`px-6 py-3 text-sm font-medium transition-colors ${
-                      !selectedSample
-                        ? "text-white border-b-2 border-zinc-600 bg-zinc-800"
-                        : "text-gray-400 hover:text-white"
-                    }`}
-                  >
-                    Custom Code
-                  </button>
-                  <button
-                    onClick={() => setSelectedSample(SAMPLE_CODES[0].id)}
-                    className={`px-6 py-3 text-sm font-medium transition-colors ${
-                      selectedSample
-                        ? "text-white border-b-2 border-zinc-600 bg-zinc-800"
-                        : "text-gray-400 hover:text-white"
-                    }`}
-                  >
+                  <span className="px-6 py-3 text-sm font-medium text-white border-b-2 border-zinc-600 bg-zinc-800">
                     Sample Code
-                  </button>
+                  </span>
                 </div>
               </div>
 
               {/* Code Input */}
-              {!selectedSample ? (
-                <div className="p-6">
-                  <textarea
-                    value={customCode}
-                    onChange={(e) => setCustomCode(e.target.value)}
-                    placeholder="Paste your React/Next.js code here..."
-                    className="w-full h-64 bg-black/50 border border-gray-700 rounded-lg p-4 text-sm text-gray-300 font-mono resize-none focus:outline-none focus:border-blue-500"
-                  />
+              <div className="p-6">
+                <div className="mb-4">
+                  <select
+                    value={selectedSample || SAMPLE_CODES[0].id}
+                    onChange={(e) => setSelectedSample(e.target.value)}
+                    className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white text-sm"
+                  >
+                    {SAMPLE_CODES.map((sample) => (
+                      <option key={sample.id} value={sample.id}>
+                        {sample.name} - {sample.description}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-              ) : (
-                <div className="p-6">
-                  <div className="mb-4">
-                    <select
-                      value={selectedSample}
-                      onChange={(e) => setSelectedSample(e.target.value)}
-                      className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white text-sm"
-                    >
-                      {SAMPLE_CODES.map((sample) => (
-                        <option key={sample.id} value={sample.id}>
-                          {sample.name} - {sample.description}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="bg-black/50 rounded p-4 text-sm text-gray-300 font-mono overflow-x-auto">
-                    <pre className="whitespace-pre-wrap">{currentCode}</pre>
-                  </div>
+                <div className="bg-black/50 rounded p-4 text-sm text-gray-300 font-mono overflow-x-auto max-h-96">
+                  <pre className="whitespace-pre-wrap">{currentCode}</pre>
                 </div>
-              )}
+              </div>
 
               {/* Analyze Button */}
               <div className="p-6 border-t border-gray-700">
@@ -543,7 +607,7 @@ export function ComprehensiveDemoSection() {
                 {activeTab === 'before' && (
                   <div className="bg-gray-800/30 border border-gray-700 rounded-xl p-6">
                     <h4 className="text-lg font-semibold text-white mb-4">Original Code</h4>
-                    <div className="bg-black/50 rounded p-4 text-sm text-gray-300 font-mono overflow-x-auto">
+                    <div className="bg-black/50 rounded p-4 text-sm text-gray-300 font-mono overflow-x-auto max-h-96">
                       <pre className="whitespace-pre-wrap">{currentCode}</pre>
                     </div>
                   </div>
@@ -552,7 +616,7 @@ export function ComprehensiveDemoSection() {
                 {activeTab === 'after' && (
                   <div className="bg-gray-800/30 border border-gray-700 rounded-xl p-6">
                     <h4 className="text-lg font-semibold text-white mb-4">Transformed Code</h4>
-                    <div className="bg-black/50 rounded p-4 text-sm text-green-300 font-mono overflow-x-auto">
+                    <div className="bg-black/50 rounded p-4 text-sm text-green-300 font-mono overflow-x-auto max-h-96">
                       <pre className="whitespace-pre-wrap">{results.transformed}</pre>
                     </div>
                     {results.fixResult && results.fixResult.appliedFixes && (
@@ -667,8 +731,7 @@ export function ComprehensiveDemoSection() {
               Ready to Transform Your Codebase?
             </h3>
             <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-4xl mx-auto font-medium">
-              Join thousands of developers who are saving hours of manual work with automated code fixes.
-              Try NeuroLint on your own codebase today.
+              Join developers transforming their codebases with automated fixes. Try NeuroLint today.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <a
@@ -703,4 +766,4 @@ export function ComprehensiveDemoSection() {
       />
     </section>
   );
-} 
+}

@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import { FAQSection } from "@/components/landing/FAQSection";
-import { CLISection } from "@/components/landing/CLISection";
 import { ComprehensiveDemoSection } from "@/components/landing/ComprehensiveDemoSection";
 
 import {
@@ -10,8 +9,6 @@ import {
   Puzzle,
   BarChart3,
   Atom,
-  CheckCircle,
-  Play,
   Settings,
 } from "lucide-react";
 
@@ -98,12 +95,9 @@ export default function Index() {
   const [mounted, setMounted] = React.useState(false);
 
   // Lazy loading refs for each section
-  const [heroCtaRef, heroCtaInView] = useInView(0.2);
   const [demoSectionRef, demoSectionInView] = useInView(0.1);
   const [featuresSectionRef, featuresSectionInView] = useInView(0.1);
-  const [comparisonSectionRef, comparisonSectionInView] = useInView(0.2);
   const [howItWorksSectionRef, howItWorksInView] = useInView(0.2);
-  const [cliSectionRef, cliSectionInView] = useInView(0.2);
   const [vscodeSectionRef, vscodeSectionInView] = useInView(0.2);
   const [faqSectionRef, faqSectionInView] = useInView(0.2);
   const [finalCtaSectionRef, finalCtaSectionInView] = useInView(0.2);
@@ -220,46 +214,6 @@ export default function Index() {
                 </svg>
               </a>
           </div>
-        </div>
-      </section>
-
-      {/* Quick CTA Section - Moved up for immediate action */}
-      <section
-        ref={heroCtaRef}
-        className="py-12 md:py-16 px-4"
-        aria-label="Call to action section"
-      >
-        <div className={`max-w-4xl mx-auto text-center transition-all duration-1000 transform ${
-          heroCtaInView
-            ? 'opacity-100 translate-y-0'
-            : 'opacity-0 translate-y-20'
-        }`}>
-          <h2 className={`text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-6 md:mb-8 tracking-tight text-white transition-all duration-1000 delay-200 transform ${
-            heroCtaInView
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-10'
-          }`}>
-            See It In Action
-          </h2>
-          <p className={`text-base md:text-lg lg:text-xl text-gray-300 mb-6 md:mb-8 leading-relaxed transition-all duration-1000 delay-400 transform ${
-            heroCtaInView
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-10'
-          }`}>
-            Watch NeuroLint automatically fix hydration crashes, missing keys, and ESLint errors
-          </p>
-          <a
-            href="#comprehensive-demo"
-            className={`inline-flex items-center gap-2 md:gap-3 bg-white text-black px-6 md:px-8 py-3 md:py-4 rounded-lg md:rounded-xl font-bold text-base md:text-lg hover:bg-gray-100 transition-all duration-1000 shadow-xl delay-600 transform interactive min-h-[48px] ${
-              heroCtaInView
-                ? 'opacity-100 translate-y-0 scale-100'
-                : 'opacity-0 translate-y-20 scale-95'
-            }`}
-            aria-label="Try interactive demo"
-          >
-            <Play className="w-6 h-6" />
-            Try Interactive Demo
-          </a>
         </div>
       </section>
 
@@ -407,77 +361,6 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Comparison Section - Moved up for differentiation */}
-      <section ref={comparisonSectionRef} className="py-24 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className={`text-center mb-20 transition-all duration-1000 transform ${
-            comparisonSectionInView
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-20'
-          }`}>
-            <h2 className={`text-5xl md:text-7xl font-black mb-8 tracking-tight text-white transition-all duration-1000 delay-200 transform ${
-              comparisonSectionInView
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-10'
-            }`}>
-              Why We're Different
-            </h2>
-            <p className={`text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto font-medium transition-all duration-1000 delay-400 transform ${
-              comparisonSectionInView
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-10'
-            }`}>
-              Other tools suggest fixes. We actually apply them.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                tool: "ESLint/Prettier",
-                what: "Find problems",
-                you: "Find AND fix problems",
-                icon: CheckCircle,
-              },
-              {
-                tool: "GitHub Copilot",
-                what: "Generate new code",
-                you: "Fix existing code",
-                icon: CheckCircle,
-              },
-              {
-                tool: "IDE Suggestions",
-                what: "Generic fixes",
-                you: "Context-aware transformations",
-                icon: CheckCircle,
-              },
-              {
-                tool: "SAST Tools",
-                what: "Security analysis",
-                you: "Comprehensive analysis + auto-fixes",
-                icon: CheckCircle,
-              },
-            ].map((item, index) => (
-              <div key={index} className={`bg-white/5 backdrop-blur-xl p-8 rounded-3xl border-2 border-black transition-all duration-300 group shadow-lg hover:shadow-xl transform ${
-                comparisonSectionInView
-                  ? 'opacity-100 translate-y-0 scale-100'
-                  : 'opacity-0 translate-y-20 scale-95'
-              }`}
-              style={{ transitionDelay: `${(index * 100) + 600}ms` }}>
-                <item.icon className="w-12 h-12 text-red-400 mb-4" />
-                <h3 className="text-xl font-black text-white mb-4">{item.tool}</h3>
-                <div className="space-y-2">
-                  <p className="text-gray-400 text-sm">What they do:</p>
-                  <p className="text-gray-300 font-medium">{item.what}</p>
-                  <p className="text-blue-400 text-sm mt-4">What we do:</p>
-                  <p className="text-white font-bold">{item.you}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* How It Works Section - Simplified and moved up */}
       <section ref={howItWorksSectionRef} className="py-24 px-4">
         <div className="max-w-7xl mx-auto">
@@ -545,15 +428,6 @@ export default function Index() {
           </div>
         </div>
       </section>
-
-      {/* CLI Section */}
-      <div ref={cliSectionRef} className={`transition-all duration-1000 transform ${
-        cliSectionInView
-          ? 'opacity-100 translate-y-0'
-          : 'opacity-0 translate-y-20'
-      }`}>
-        <CLISection />
-      </div>
 
       {/* VSCode Section - Removed: CLI-only now */}
 

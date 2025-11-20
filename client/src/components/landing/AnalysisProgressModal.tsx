@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { X, CheckCircle, Settings, Code, Sparkles, Target, Zap, Layers } from 'lucide-react';
 
 interface LayerInfo {
@@ -50,7 +50,7 @@ export function AnalysisProgressModal({
   if (!isOpen) return null;
 
   // Handle escape key
-  React.useEffect(() => {
+  useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
@@ -225,4 +225,4 @@ export function AnalysisProgressModal({
       </div>
     </div>
   );
-} 
+}

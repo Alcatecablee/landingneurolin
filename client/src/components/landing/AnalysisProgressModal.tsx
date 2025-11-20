@@ -37,20 +37,17 @@ interface LayerIconProps {
 }
 
 function LayerIcon({ layerId, isSpinning }: LayerIconProps) {
-  const iconIndex = layerId - 1;
-  const color = LAYER_COLORS[iconIndex] || 'text-gray-400';
-
   if (isSpinning) {
     return <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-400" />;
   }
 
-  if (iconIndex === 0) return <Settings className={`w-5 h-5 ${color}`} />;
-  if (iconIndex === 1) return <Code className={`w-5 h-5 ${color}`} />;
-  if (iconIndex === 2) return <Sparkles className={`w-5 h-5 ${color}`} />;
-  if (iconIndex === 3) return <Target className={`w-5 h-5 ${color}`} />;
-  if (iconIndex === 4) return <Zap className={`w-5 h-5 ${color}`} />;
-  if (iconIndex === 5) return <CheckCircle className={`w-5 h-5 ${color}`} />;
-  if (iconIndex === 6) return <Layers className={`w-5 h-5 ${color}`} />;
+  if (layerId === 1) return <Settings className="w-5 h-5 text-blue-400" />;
+  if (layerId === 2) return <Code className="w-5 h-5 text-green-400" />;
+  if (layerId === 3) return <Sparkles className="w-5 h-5 text-purple-400" />;
+  if (layerId === 4) return <Target className="w-5 h-5 text-orange-400" />;
+  if (layerId === 5) return <Zap className="w-5 h-5 text-pink-400" />;
+  if (layerId === 6) return <CheckCircle className="w-5 h-5 text-cyan-400" />;
+  if (layerId === 7) return <Layers className="w-5 h-5 text-indigo-400" />;
   return <Settings className="w-5 h-5 text-gray-400" />;
 }
 

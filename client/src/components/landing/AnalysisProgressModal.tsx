@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { X, CheckCircle, Settings, Code, Sparkles, Target, Zap, Layers } from 'lucide-react';
 
 interface LayerInfo {
@@ -225,4 +225,4 @@ export function AnalysisProgressModal({
       </div>
     </div>
   );
-} 
+}

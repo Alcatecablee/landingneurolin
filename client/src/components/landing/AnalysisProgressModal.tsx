@@ -154,21 +154,19 @@ export function AnalysisProgressModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div 
+      <div
         className="absolute inset-0 bg-black/80 backdrop-blur-sm"
         onClick={onClose}
       />
-      
-      {/* Modal */}
-      <div 
+
+      <div
         className="relative w-full max-w-2xl bg-gray-900/95 border border-gray-700 rounded-2xl shadow-2xl overflow-hidden"
         role="dialog"
         aria-modal="true"
         aria-labelledby="progress-modal-title"
         aria-describedby="progress-modal-description"
+        style={{ '--progress-width': progressWidth } as React.CSSProperties}
       >
-        {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-700">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center">
@@ -187,9 +185,7 @@ export function AnalysisProgressModal({
           </button>
         </div>
 
-        {/* Progress Content */}
         <div className="p-6">
-          {/* Progress Bar */}
           <div className="mb-6">
             <div className="flex justify-between text-sm text-gray-400 mb-2">
               <span>Progress</span>
@@ -203,7 +199,6 @@ export function AnalysisProgressModal({
             </div>
           </div>
 
-          {/* Layer Progress */}
           <div className="space-y-3 max-h-96 overflow-y-auto">
             {layerInfo.map((layer, index) => (
               <LayerItem
@@ -216,7 +211,6 @@ export function AnalysisProgressModal({
             ))}
           </div>
 
-          {/* Processing Time */}
           {processingTime && (
             <div className="mt-6 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
               <div className="flex items-center justify-between">
@@ -226,7 +220,6 @@ export function AnalysisProgressModal({
             </div>
           )}
 
-          {/* Current Layer Info */}
           {currentLayer && layerInfo[currentLayer - 1] && (
             <div className="mt-4 p-4 bg-blue-500/10 rounded-lg border border-blue-500/30">
               <h4 className="text-sm font-semibold text-blue-400 mb-2">
@@ -239,7 +232,6 @@ export function AnalysisProgressModal({
           )}
         </div>
 
-        {/* Footer */}
         <div className="p-6 border-t border-gray-700 bg-gray-800/30">
           <div className="flex items-center justify-between">
             <p className="text-sm text-gray-400">

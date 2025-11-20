@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 
 export default defineConfig({
-  plugins: [react({ babel: { plugins: [['babel-plugin-react-compiler', {}]] } })],
+  plugins: [react({ babel: { plugins: [] } })],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./client/src"),

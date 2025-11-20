@@ -181,69 +181,15 @@ export function AnalysisProgressModal({
 
           {/* Layer Progress */}
           <div className="space-y-3 max-h-96 overflow-y-auto">
-            {layerInfo.map((layer, index) => {
-              const isCompleted = animationStep > index;
-              const isCurrent = animationStep === index + 1;
-
-              let containerClass = "bg-gray-800/50 border border-gray-700";
-              let iconClass = "bg-gray-700";
-              let textClass = "text-gray-400";
-
-              if (isCompleted) {
-                containerClass = "bg-green-500/10 border border-green-500/30";
-                iconClass = "bg-green-500/20";
-                textClass = "text-white";
-              } else if (isCurrent) {
-                containerClass = "bg-blue-500/10 border border-blue-500/30 animate-pulse";
-                iconClass = "bg-blue-500/20";
-                textClass = "text-blue-400";
-              }
-
-              return (
-                <div
-                  key={layer.id}
-                  className={`flex items-center gap-4 p-4 rounded-xl transition-all duration-500 ${containerClass}`}
-                >
-                  {/* Layer Icon */}
-                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${iconClass}`}>
-                    <div className={`flex items-center justify-center ${isCompleted ? "text-green-400" : ""}`}>
-                      <LayerIcon layerId={layer.id} isSpinning={isCurrent} />
-                    </div>
-                  </div>
-
-                  {/* Layer Info */}
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <p className={`font-semibold ${textClass}`}>
-                        Layer {layer.id}: {layer.name}
-                      </p>
-                      {isCompleted && (
-                        <CheckCircle className="w-4 h-4 text-green-400" />
-                      )}
-                    </div>
-                    <p className="text-sm text-gray-500">{layer.description}</p>
-                    {isCurrent && (
-                      <p className="text-xs text-blue-400 mt-1 animate-pulse">
-                        Processing...
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Status */}
-                  <div className="text-right">
-                    {isCompleted && (
-                      <span className="text-xs text-green-400 font-medium">Complete</span>
-                    )}
-                    {isCurrent && (
-                      <span className="text-xs text-blue-400 font-medium">Active</span>
-                    )}
-                    {!isCompleted && !isCurrent && (
-                      <span className="text-xs text-gray-500 font-medium">Pending</span>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+            {layerInfo.map((layer, index) => (
+              <LayerItem
+                key={layer.id}
+                layer={layer}
+                index={index}
+                isCompleted={animationStep > index}
+                isCurrent={animationStep === index + 1}
+              />
+            ))}
           </div>
 
           {/* Processing Time */}

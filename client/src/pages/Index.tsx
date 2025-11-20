@@ -98,7 +98,6 @@ export default function Index() {
   const [demoSectionRef, demoSectionInView] = useInView(0.1);
   const [featuresSectionRef, featuresSectionInView] = useInView(0.1);
   const [howItWorksSectionRef, howItWorksInView] = useInView(0.2);
-  const [cliSectionRef, cliSectionInView] = useInView(0.2);
   const [vscodeSectionRef, vscodeSectionInView] = useInView(0.2);
   const [faqSectionRef, faqSectionInView] = useInView(0.2);
   const [finalCtaSectionRef, finalCtaSectionInView] = useInView(0.2);

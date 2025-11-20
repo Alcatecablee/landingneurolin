@@ -502,35 +502,24 @@ export function ComprehensiveDemoSection() {
               </div>
 
               {/* Code Input */}
-              {!selectedSample ? (
-                <div className="p-6">
-                  <textarea
-                    value={customCode}
-                    onChange={(e) => setCustomCode(e.target.value)}
-                    placeholder="Paste your React/Next.js code here..."
-                    className="w-full h-64 bg-black/50 border border-gray-700 rounded-lg p-4 text-sm text-gray-300 font-mono resize-none focus:outline-none focus:border-blue-500"
-                  />
+              <div className="p-6">
+                <div className="mb-4">
+                  <select
+                    value={selectedSample || SAMPLE_CODES[0].id}
+                    onChange={(e) => setSelectedSample(e.target.value)}
+                    className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white text-sm"
+                  >
+                    {SAMPLE_CODES.map((sample) => (
+                      <option key={sample.id} value={sample.id}>
+                        {sample.name} - {sample.description}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-              ) : (
-                <div className="p-6">
-                  <div className="mb-4">
-                    <select
-                      value={selectedSample}
-                      onChange={(e) => setSelectedSample(e.target.value)}
-                      className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white text-sm"
-                    >
-                      {SAMPLE_CODES.map((sample) => (
-                        <option key={sample.id} value={sample.id}>
-                          {sample.name} - {sample.description}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="bg-black/50 rounded p-4 text-sm text-gray-300 font-mono overflow-x-auto">
-                    <pre className="whitespace-pre-wrap">{currentCode}</pre>
-                  </div>
+                <div className="bg-black/50 rounded p-4 text-sm text-gray-300 font-mono overflow-x-auto max-h-96">
+                  <pre className="whitespace-pre-wrap">{currentCode}</pre>
                 </div>
-              )}
+              </div>
 
               {/* Analyze Button */}
               <div className="p-6 border-t border-gray-700">

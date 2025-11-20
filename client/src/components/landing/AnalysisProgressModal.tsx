@@ -157,7 +157,7 @@ export function AnalysisProgressModal({
                     <div className={`flex items-center justify-center ${
                       isCompleted ? "text-green-400" : ""
                     }`}>
-                      {renderLayerIcon(layer.id, isCurrent)}
+                      <LayerIcon layerId={layer.id} isSpinning={isCurrent} />
                     </div>
                   </div>
 

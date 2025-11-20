@@ -65,14 +65,13 @@ function TodoList({ todos }) {
   {
     id: "nextjs-app-router",
     name: "Next.js App Router Component",
-    description: "SSR issues, localStorage access, missing error handling",
-    code: `'use client';
-
-import { useState, useEffect } from 'react';
+    description: "Missing use client directive, localStorage in SSR, unguarded window access",
+    code: `import { useState, useEffect } from 'react';
 
 export default function UserProfile({ userId }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const theme = localStorage.getItem('theme');
 
   useEffect(() => {
     fetch(\`/api/users/\${userId}\`)
@@ -89,9 +88,7 @@ export default function UserProfile({ userId }) {
     <div>
       <h1>{user.name}</h1>
       <p>{user.email}</p>
-      <button onClick={() => localStorage.setItem('theme', 'dark')}>
-        Set Dark Theme
-      </button>
+      <span>Theme: {theme}</span>
     </div>
   );
 }`,

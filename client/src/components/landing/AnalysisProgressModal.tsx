@@ -62,36 +62,71 @@ interface LayerItemProps {
 }
 
 function LayerItem({ layer, isCompleted, isCurrent }: LayerItemProps) {
-  const style: React.CSSProperties = {};
+  if (isCompleted) {
+    return (
+      <div className="flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-green-500/10 border border-green-500/30">
+        <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-green-500/20">
+          <div className="flex items-center justify-center text-green-400">
+            <LayerIcon layerId={layer.id} isSpinning={false} />
+          </div>
+        </div>
+        <div className="flex-1">
+          <div className="flex items-center gap-2 mb-1">
+            <p className="font-semibold text-white">
+              Layer {layer.id}: {layer.name}
+            </p>
+            <CheckCircle className="w-4 h-4 text-green-400" />
+          </div>
+          <p className="text-sm text-gray-500">{layer.description}</p>
+        </div>
+        <div className="text-right">
+          <span className="text-xs text-green-400 font-medium">Complete</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (isCurrent) {
+    return (
+      <div className="flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-blue-500/10 border border-blue-500/30 animate-pulse">
+        <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-blue-500/20">
+          <div className="flex items-center justify-center">
+            <LayerIcon layerId={layer.id} isSpinning={true} />
+          </div>
+        </div>
+        <div className="flex-1">
+          <div className="flex items-center gap-2 mb-1">
+            <p className="font-semibold text-blue-400">
+              Layer {layer.id}: {layer.name}
+            </p>
+          </div>
+          <p className="text-sm text-gray-500">{layer.description}</p>
+          <p className="text-xs text-blue-400 mt-1 animate-pulse">Processing...</p>
+        </div>
+        <div className="text-right">
+          <span className="text-xs text-blue-400 font-medium">Active</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div
-      className={isCompleted ? "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-green-500/10 border border-green-500/30" : isCurrent ? "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-blue-500/10 border border-blue-500/30 animate-pulse" : "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-gray-800/50 border border-gray-700"}
-      style={style}
-    >
-      <div
-        className={isCompleted ? "w-10 h-10 rounded-lg flex items-center justify-center bg-green-500/20" : isCurrent ? "w-10 h-10 rounded-lg flex items-center justify-center bg-blue-500/20" : "w-10 h-10 rounded-lg flex items-center justify-center bg-gray-700"}
-      >
-        <div className={isCompleted ? "flex items-center justify-center text-green-400" : "flex items-center justify-center"}>
-          <LayerIcon layerId={layer.id} isSpinning={isCurrent} />
+    <div className="flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-gray-800/50 border border-gray-700">
+      <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-gray-700">
+        <div className="flex items-center justify-center">
+          <LayerIcon layerId={layer.id} isSpinning={false} />
         </div>
       </div>
-
       <div className="flex-1">
         <div className="flex items-center gap-2 mb-1">
-          <p className={isCompleted ? "font-semibold text-white" : isCurrent ? "font-semibold text-blue-400" : "font-semibold text-gray-400"}>
+          <p className="font-semibold text-gray-400">
             Layer {layer.id}: {layer.name}
           </p>
-          {isCompleted && <CheckCircle className="w-4 h-4 text-green-400" />}
         </div>
         <p className="text-sm text-gray-500">{layer.description}</p>
-        {isCurrent && <p className="text-xs text-blue-400 mt-1 animate-pulse">Processing...</p>}
       </div>
-
       <div className="text-right">
-        {isCompleted && <span className="text-xs text-green-400 font-medium">Complete</span>}
-        {isCurrent && <span className="text-xs text-blue-400 font-medium">Active</span>}
-        {!isCompleted && !isCurrent && <span className="text-xs text-gray-500 font-medium">Pending</span>}
+        <span className="text-xs text-gray-500 font-medium">Pending</span>
       </div>
     </div>
   );

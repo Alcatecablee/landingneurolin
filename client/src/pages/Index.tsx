@@ -98,7 +98,6 @@ export default function Index() {
   const [mounted, setMounted] = React.useState(false);
 
   // Lazy loading refs for each section
-  const [heroCtaRef, heroCtaInView] = useInView(0.2);
   const [demoSectionRef, demoSectionInView] = useInView(0.1);
   const [featuresSectionRef, featuresSectionInView] = useInView(0.1);
   const [comparisonSectionRef, comparisonSectionInView] = useInView(0.2);

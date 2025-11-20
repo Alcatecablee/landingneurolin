@@ -135,28 +135,28 @@ export function AnalysisProgressModal({
               const isCompleted = animationStep > index;
               const isCurrent = animationStep === index + 1;
 
+              let containerClass = "bg-gray-800/50 border border-gray-700";
+              let iconClass = "bg-gray-700";
+              let textClass = "text-gray-400";
+
+              if (isCompleted) {
+                containerClass = "bg-green-500/10 border border-green-500/30";
+                iconClass = "bg-green-500/20";
+                textClass = "text-white";
+              } else if (isCurrent) {
+                containerClass = "bg-blue-500/10 border border-blue-500/30 animate-pulse";
+                iconClass = "bg-blue-500/20";
+                textClass = "text-blue-400";
+              }
+
               return (
                 <div
                   key={layer.id}
-                  className={`flex items-center gap-4 p-4 rounded-xl transition-all duration-500 ${
-                    isCompleted
-                      ? "bg-green-500/10 border border-green-500/30"
-                      : isCurrent
-                      ? "bg-blue-500/10 border border-blue-500/30 animate-pulse"
-                      : "bg-gray-800/50 border border-gray-700"
-                  }`}
+                  className={`flex items-center gap-4 p-4 rounded-xl transition-all duration-500 ${containerClass}`}
                 >
                   {/* Layer Icon */}
-                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                    isCompleted
-                      ? "bg-green-500/20"
-                      : isCurrent
-                      ? "bg-blue-500/20"
-                      : "bg-gray-700"
-                  }`}>
-                    <div className={`flex items-center justify-center ${
-                      isCompleted ? "text-green-400" : ""
-                    }`}>
+                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${iconClass}`}>
+                    <div className={`flex items-center justify-center ${isCompleted ? "text-green-400" : ""}`}>
                       <LayerIcon layerId={layer.id} isSpinning={isCurrent} />
                     </div>
                   </div>
@@ -164,9 +164,7 @@ export function AnalysisProgressModal({
                   {/* Layer Info */}
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <p className={`font-semibold ${
-                        isCompleted ? "text-white" : isCurrent ? "text-blue-400" : "text-gray-400"
-                      }`}>
+                      <p className={`font-semibold ${textClass}`}>
                         Layer {layer.id}: {layer.name}
                       </p>
                       {isCompleted && (

@@ -21,22 +21,35 @@ interface AnalysisProgressModalProps {
   processingTime?: number;
 }
 
-const getLayerIcon = (layerId: number) => {
-  const icons = [Settings, Code, Sparkles, Target, Zap, CheckCircle, Layers];
-  return icons[layerId - 1] || Settings;
-};
+const LAYER_ICONS = [Settings, Code, Sparkles, Target, Zap, CheckCircle, Layers];
+const LAYER_COLORS = [
+  'text-blue-400',
+  'text-green-400',
+  'text-purple-400',
+  'text-orange-400',
+  'text-pink-400',
+  'text-cyan-400',
+  'text-indigo-400'
+];
 
-const getLayerColor = (layerId: number) => {
-  const colors = [
-    'text-blue-400',
-    'text-green-400', 
-    'text-purple-400',
-    'text-orange-400',
-    'text-pink-400',
-    'text-cyan-400',
-    'text-indigo-400'
-  ];
-  return colors[layerId - 1] || 'text-gray-400';
+const renderLayerIcon = (layerId: number, isSpinning: boolean) => {
+  const IconIndex = layerId - 1;
+  const color = LAYER_COLORS[IconIndex] || 'text-gray-400';
+
+  if (isSpinning) {
+    return <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-400"></div>;
+  }
+
+  switch (IconIndex) {
+    case 0: return <Settings className={`w-5 h-5 ${color}`} />;
+    case 1: return <Code className={`w-5 h-5 ${color}`} />;
+    case 2: return <Sparkles className={`w-5 h-5 ${color}`} />;
+    case 3: return <Target className={`w-5 h-5 ${color}`} />;
+    case 4: return <Zap className={`w-5 h-5 ${color}`} />;
+    case 5: return <CheckCircle className={`w-5 h-5 ${color}`} />;
+    case 6: return <Layers className={`w-5 h-5 ${color}`} />;
+    default: return <Settings className={`w-5 h-5 text-gray-400`} />;
+  }
 };
 
 export function AnalysisProgressModal({

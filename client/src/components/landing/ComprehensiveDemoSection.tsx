@@ -495,26 +495,9 @@ export function ComprehensiveDemoSection() {
               {/* Tab Controls */}
               <div className="bg-gray-800/50 border-b border-gray-700">
                 <div className="flex">
-                  <button
-                    onClick={() => setSelectedSample(null)}
-                    className={`px-6 py-3 text-sm font-medium transition-colors ${
-                      !selectedSample
-                        ? "text-white border-b-2 border-zinc-600 bg-zinc-800"
-                        : "text-gray-400 hover:text-white"
-                    }`}
-                  >
-                    Custom Code
-                  </button>
-                  <button
-                    onClick={() => setSelectedSample(SAMPLE_CODES[0].id)}
-                    className={`px-6 py-3 text-sm font-medium transition-colors ${
-                      selectedSample
-                        ? "text-white border-b-2 border-zinc-600 bg-zinc-800"
-                        : "text-gray-400 hover:text-white"
-                    }`}
-                  >
+                  <span className="px-6 py-3 text-sm font-medium text-white border-b-2 border-zinc-600 bg-zinc-800">
                     Sample Code
-                  </button>
+                  </span>
                 </div>
               </div>
 

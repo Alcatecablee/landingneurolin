@@ -11,7 +11,6 @@ import {
   BarChart3,
   Atom,
   CheckCircle,
-  Play,
   Settings,
 } from "lucide-react";
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import { FAQSection } from "@/components/landing/FAQSection";
-import { CLISection } from "@/components/landing/CLISection";
 import { ComprehensiveDemoSection } from "@/components/landing/ComprehensiveDemoSection";
 
 import {

@@ -130,6 +130,14 @@ export function AnalysisProgressModal({
 }: AnalysisProgressModalProps) {
   if (!isOpen) return null;
 
+  const progressPercentage = useMemo(() => {
+    return Math.round((animationStep / layerInfo.length) * 100);
+  }, [animationStep, layerInfo.length]);
+
+  const progressWidth = useMemo(() => {
+    return `${(animationStep / layerInfo.length) * 100}%`;
+  }, [animationStep, layerInfo.length]);
+
   // Handle escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {

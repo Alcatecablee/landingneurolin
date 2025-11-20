@@ -10,7 +10,6 @@ import {
   Puzzle,
   BarChart3,
   Atom,
-  CheckCircle,
   Settings,
 } from "lucide-react";
 

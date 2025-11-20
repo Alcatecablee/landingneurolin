@@ -99,7 +99,6 @@ export default function Index() {
   // Lazy loading refs for each section
   const [demoSectionRef, demoSectionInView] = useInView(0.1);
   const [featuresSectionRef, featuresSectionInView] = useInView(0.1);
-  const [comparisonSectionRef, comparisonSectionInView] = useInView(0.2);
   const [howItWorksSectionRef, howItWorksInView] = useInView(0.2);
   const [cliSectionRef, cliSectionInView] = useInView(0.2);
   const [vscodeSectionRef, vscodeSectionInView] = useInView(0.2);

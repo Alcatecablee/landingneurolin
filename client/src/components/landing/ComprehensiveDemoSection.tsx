@@ -251,7 +251,7 @@ export function ComprehensiveDemoSection() {
   const [showProgressModal, setShowProgressModal] = useState(false);
   const [processingTime, setProcessingTime] = useState<number>(0);
 
-  const currentCode = customCode || (selectedSample ? SAMPLE_CODES.find(s => s.id === selectedSample)?.code : '');
+  const currentCode = selectedSample ? SAMPLE_CODES.find(s => s.id === selectedSample)?.code || '' : '';
 
   // Load layer information and engine status on component mount
   useEffect(() => {

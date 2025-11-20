@@ -241,8 +241,7 @@ function Navigation() {
 ];
 
 export function ComprehensiveDemoSection() {
-  const [customCode, setCustomCode] = useState('');
-  const [selectedSample, setSelectedSample] = useState<string | null>(null);
+  const [selectedSample, setSelectedSample] = useState<string | null>(SAMPLE_CODES[0].id);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [results, setResults] = useState<DemoResult | null>(null);
   const [activeTab, setActiveTab] = useState<'before' | 'after' | 'layers'>('before');

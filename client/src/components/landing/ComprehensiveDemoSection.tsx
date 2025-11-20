@@ -667,8 +667,7 @@ export function ComprehensiveDemoSection() {
               Ready to Transform Your Codebase?
             </h3>
             <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-4xl mx-auto font-medium">
-              Join thousands of developers who are saving hours of manual work with automated code fixes.
-              Try NeuroLint on your own codebase today.
+              Join developers transforming their codebases with automated fixes. Try NeuroLint today.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <a
@@ -703,4 +702,4 @@ export function ComprehensiveDemoSection() {
       />
     </section>
   );
-} 
+}

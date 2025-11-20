@@ -97,37 +97,144 @@ export default function UserProfile({ userId }) {
   {
     id: "hydration-errors",
     name: "Hydration Error Component",
-    description: "Hydration mismatch issues with localStorage",
-    code: `'use client';
-
-import { useState, useEffect } from 'react';
-
-export default function ThemeProvider() {
-  const [theme, setTheme] = useState('light');
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    setTheme(savedTheme);
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return <div>Loading theme...</div>;
-  }
+    description: "Direct window/localStorage access causing hydration mismatch",
+    code: `export default function ThemeProvider() {
+  const [theme, setTheme] = React.useState('light');
+  const storedTheme = window.localStorage.getItem('theme') || 'light';
 
   return (
-    <div className={\`theme-\${theme}\`}>
-      <h1>Current theme: {theme}</h1>
+    <div className={\`theme-\${storedTheme}\`}>
+      <h1>Current theme: {storedTheme}</h1>
       <button onClick={() => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
         setTheme(newTheme);
-        localStorage.setItem('theme', newTheme);
+        window.localStorage.setItem('theme', newTheme);
       }}>
         Toggle Theme
       </button>
     </div>
   );
+}`,
+    language: "tsx"
+  },
+  {
+    id: "pattern-layer",
+    name: "Pattern Layer Issues",
+    description: "HTML entities, var declarations, redundant code patterns",
+    code: `var userCount = 0;
+var activeUsers = [];
+
+function printMessage() {
+  var message = "Welcome &nbsp; to &nbsp; NeuroLint";
+  console.log(message);
+  alert('User count: ' + userCount);
+}
+
+function getUser(id) {
+  var found = false;
+  for (var i = 0; i < activeUsers.length; i++) {
+    if (activeUsers[i].id === id) {
+      found = true;
+      break;
+    }
+  }
+  return found;
+}`,
+    language: "js"
+  },
+  {
+    id: "accessibility-layer",
+    name: "Accessibility Issues",
+    description: "Missing aria-labels, alt text, and semantic HTML",
+    code: `function Button({ icon, onClick }) {
+  return (
+    <button onClick={onClick}>
+      <svg>{icon}</svg>
+    </button>
+  );
+}
+
+function Gallery({ images }) {
+  return (
+    <div>
+      {images.map((img, idx) => (
+        <img key={idx} src={img.url} />
+      ))}
+    </div>
+  );
+}
+
+function Navigation() {
+  return (
+    <div>
+      <button onClick={() => alert('Search')}>🔍</button>
+      <button onClick={() => alert('Menu')}>☰</button>
+    </div>
+  );
+}`,
+    language: "tsx"
+  },
+  {
+    id: "config-layer",
+    name: "Configuration Issues",
+    description: "Outdated tsconfig.json and package.json settings",
+    code: `{
+  "compilerOptions": {
+    "target": "ES2015",
+    "module": "commonjs",
+    "lib": ["ES2015"],
+    "jsx": "react",
+    "strict": false,
+    "esModuleInterop": false
+  }
+}`,
+    language: "json"
+  },
+  {
+    id: "data-fetching",
+    name: "Data Fetching Issues",
+    description: "Missing error handling, no proper loading states, hardcoded URLs",
+    code: `export default function ProductList() {
+  const [products, setProducts] = React.useState([]);
+
+  React.useEffect(() => {
+    const response = await fetch('http://api.example.com/products');
+    const data = await response.json();
+    setProducts(data);
+  });
+
+  return (
+    <ul>
+      {products.map(p => <li key={p.id}>{p.name}</li>)}
+    </ul>
+  );
+}`,
+    language: "tsx"
+  },
+  {
+    id: "modern-react",
+    name: "Legacy React Patterns",
+    description: "Class components, old hook patterns, missing TypeScript",
+    code: `class UserCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { user: null };
+  }
+
+  componentDidMount() {
+    fetch('/api/user/' + this.props.id)
+      .then(r => r.json())
+      .then(user => this.setState({ user }));
+  }
+
+  render() {
+    return (
+      <div>
+        <h2>{this.state.user?.name}</h2>
+        <p>{this.state.user?.email}</p>
+      </div>
+    );
+  }
 }`,
     language: "tsx"
   }

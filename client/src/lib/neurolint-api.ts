@@ -438,62 +438,20 @@ class NeuroLintAPI {
    * Get engine status and layer information
    */
   async getEngineStatus(): Promise<EngineStatus> {
-    try {
-      const response = await fetch(`${this.baseUrl}/test`, {
-        method: 'GET',
-        headers: {
-          'X-Client-ID': this.clientId,
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    // Return mock engine status (no API call needed)
+    return {
+      initialized: true,
+      version: '1.2.1',
+      supportedLayers: [1, 2, 3, 4, 5, 6, 7],
+      totalRules: 170,
+      stats: {
+        analyses: 1250,
+        fixes: 8900,
+        errors: 23,
+        cacheHits: 450,
+        processingTime: 1250
       }
-
-      const result = await response.json();
-      
-      // Transform the test response to match EngineStatus format
-      return {
-        initialized: true,
-        version: '1.2.1',
-        supportedLayers: [1, 2, 3, 4, 5, 6, 7],
-        totalRules: 45,
-        stats: {
-          analyses: 1250,
-          fixes: 8900,
-          errors: 23,
-          cacheHits: 450,
-          processingTime: 1250
-        }
-      };
-
-    } catch (error) {
-      // Replace console.error with proper error handling
-      if (typeof window !== 'undefined') {
-        const event = new CustomEvent('logError', {
-          detail: {
-            action: 'get_engine_status_failed',
-            error: error instanceof Error ? error.message : 'Unknown error',
-            timestamp: new Date().toISOString()
-          }
-        });
-        window.dispatchEvent(event);
-      }
-      // Return fallback status
-      return {
-        initialized: true,
-        version: '1.2.1',
-        supportedLayers: [1, 2, 3, 4, 5, 6, 7],
-        totalRules: 45,
-        stats: {
-          analyses: 0,
-          fixes: 0,
-          errors: 0,
-          cacheHits: 0,
-          processingTime: 0
-        }
-      };
-    }
+    };
   }
 
   /**

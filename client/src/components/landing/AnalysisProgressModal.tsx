@@ -1,5 +1,5 @@
-import { useEffect, useMemo } from 'react';
-import { X, CheckCircle, Settings, Code, Sparkles, Target, Zap, Layers } from 'lucide-react';
+import { useEffect } from 'react';
+import { X } from 'lucide-react';
 
 interface LayerInfo {
   id: number;
@@ -21,18 +21,8 @@ interface AnalysisProgressModalProps {
   processingTime?: number;
 }
 
-export function AnalysisProgressModal({
-  isOpen,
-  onClose,
-  layerInfo,
-  animationStep,
-  currentLayer,
-  processingTime
-}: AnalysisProgressModalProps) {
-  if (!isOpen) return null;
-
-  const progressPercentage = useMemo(() => Math.round((animationStep / layerInfo.length) * 100), [animationStep, layerInfo.length]);
-  const progressWidth = useMemo(() => `${(animationStep / layerInfo.length) * 100}%`, [animationStep, layerInfo.length]);
+export function AnalysisProgressModal(props: AnalysisProgressModalProps) {
+  const { isOpen, onClose, layerInfo, animationStep, currentLayer, processingTime } = props;
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -46,6 +36,13 @@ export function AnalysisProgressModal({
       return () => document.removeEventListener('keydown', handleEscape);
     }
   }, [isOpen, onClose]);
+
+  if (!isOpen) {
+    return null;
+  }
+
+  const progressPercentage = Math.round((animationStep / layerInfo.length) * 100);
+  const progressWidth = (animationStep / layerInfo.length) * 100;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -82,183 +79,28 @@ export function AnalysisProgressModal({
             <div className="w-full bg-gray-800 rounded-full h-2">
               <div 
                 className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full transition-all duration-500 ease-out"
-                style={{ width: progressWidth }}
+                style={{ width: `${progressWidth}%` }}
               />
             </div>
           </div>
 
           <div className="space-y-3 max-h-96 overflow-y-auto">
-            {layerInfo.map((layer, index) => {
-              const isCompleted = animationStep > index;
-              const isCurrent = animationStep === index + 1;
-
-              if (layer.id === 1) {
-                return (
-                  <div key={layer.id} className={isCompleted ? "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-green-500/10 border border-green-500/30" : isCurrent ? "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-blue-500/10 border border-blue-500/30 animate-pulse" : "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-gray-800/50 border border-gray-700"}>
-                    <div className={isCompleted ? "w-10 h-10 rounded-lg flex items-center justify-center bg-green-500/20" : isCurrent ? "w-10 h-10 rounded-lg flex items-center justify-center bg-blue-500/20" : "w-10 h-10 rounded-lg flex items-center justify-center bg-gray-700"}>
-                      <div className={isCompleted ? "flex items-center justify-center text-green-400" : "flex items-center justify-center"}>
-                        {isCurrent ? <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-400" /> : <Settings className={`w-5 h-5 text-blue-400`} />}
-                      </div>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <p className={isCompleted ? "font-semibold text-white" : isCurrent ? "font-semibold text-blue-400" : "font-semibold text-gray-400"}>Layer {layer.id}: {layer.name}</p>
-                        {isCompleted && <CheckCircle className="w-4 h-4 text-green-400" />}
-                      </div>
-                      <p className="text-sm text-gray-500">{layer.description}</p>
-                      {isCurrent && <p className="text-xs text-blue-400 mt-1 animate-pulse">Processing...</p>}
-                    </div>
-                    <div className="text-right">
-                      {isCompleted && <span className="text-xs text-green-400 font-medium">Complete</span>}
-                      {isCurrent && <span className="text-xs text-blue-400 font-medium">Active</span>}
-                      {!isCompleted && !isCurrent && <span className="text-xs text-gray-500 font-medium">Pending</span>}
-                    </div>
+            {layerInfo.map((layer) => (
+              <div key={layer.id} className="flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-gray-800/50 border border-gray-700">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-gray-700" />
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <p className="font-semibold text-gray-400">
+                      Layer {layer.id}: {layer.name}
+                    </p>
                   </div>
-                );
-              }
-              if (layer.id === 2) {
-                return (
-                  <div key={layer.id} className={isCompleted ? "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-green-500/10 border border-green-500/30" : isCurrent ? "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-blue-500/10 border border-blue-500/30 animate-pulse" : "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-gray-800/50 border border-gray-700"}>
-                    <div className={isCompleted ? "w-10 h-10 rounded-lg flex items-center justify-center bg-green-500/20" : isCurrent ? "w-10 h-10 rounded-lg flex items-center justify-center bg-blue-500/20" : "w-10 h-10 rounded-lg flex items-center justify-center bg-gray-700"}>
-                      <div className={isCompleted ? "flex items-center justify-center text-green-400" : "flex items-center justify-center"}>
-                        {isCurrent ? <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-400" /> : <Code className={`w-5 h-5 text-green-400`} />}
-                      </div>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <p className={isCompleted ? "font-semibold text-white" : isCurrent ? "font-semibold text-blue-400" : "font-semibold text-gray-400"}>Layer {layer.id}: {layer.name}</p>
-                        {isCompleted && <CheckCircle className="w-4 h-4 text-green-400" />}
-                      </div>
-                      <p className="text-sm text-gray-500">{layer.description}</p>
-                      {isCurrent && <p className="text-xs text-blue-400 mt-1 animate-pulse">Processing...</p>}
-                    </div>
-                    <div className="text-right">
-                      {isCompleted && <span className="text-xs text-green-400 font-medium">Complete</span>}
-                      {isCurrent && <span className="text-xs text-blue-400 font-medium">Active</span>}
-                      {!isCompleted && !isCurrent && <span className="text-xs text-gray-500 font-medium">Pending</span>}
-                    </div>
-                  </div>
-                );
-              }
-              if (layer.id === 3) {
-                return (
-                  <div key={layer.id} className={isCompleted ? "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-green-500/10 border border-green-500/30" : isCurrent ? "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-blue-500/10 border border-blue-500/30 animate-pulse" : "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-gray-800/50 border border-gray-700"}>
-                    <div className={isCompleted ? "w-10 h-10 rounded-lg flex items-center justify-center bg-green-500/20" : isCurrent ? "w-10 h-10 rounded-lg flex items-center justify-center bg-blue-500/20" : "w-10 h-10 rounded-lg flex items-center justify-center bg-gray-700"}>
-                      <div className={isCompleted ? "flex items-center justify-center text-green-400" : "flex items-center justify-center"}>
-                        {isCurrent ? <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-400" /> : <Sparkles className={`w-5 h-5 text-purple-400`} />}
-                      </div>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <p className={isCompleted ? "font-semibold text-white" : isCurrent ? "font-semibold text-blue-400" : "font-semibold text-gray-400"}>Layer {layer.id}: {layer.name}</p>
-                        {isCompleted && <CheckCircle className="w-4 h-4 text-green-400" />}
-                      </div>
-                      <p className="text-sm text-gray-500">{layer.description}</p>
-                      {isCurrent && <p className="text-xs text-blue-400 mt-1 animate-pulse">Processing...</p>}
-                    </div>
-                    <div className="text-right">
-                      {isCompleted && <span className="text-xs text-green-400 font-medium">Complete</span>}
-                      {isCurrent && <span className="text-xs text-blue-400 font-medium">Active</span>}
-                      {!isCompleted && !isCurrent && <span className="text-xs text-gray-500 font-medium">Pending</span>}
-                    </div>
-                  </div>
-                );
-              }
-              if (layer.id === 4) {
-                return (
-                  <div key={layer.id} className={isCompleted ? "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-green-500/10 border border-green-500/30" : isCurrent ? "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-blue-500/10 border border-blue-500/30 animate-pulse" : "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-gray-800/50 border border-gray-700"}>
-                    <div className={isCompleted ? "w-10 h-10 rounded-lg flex items-center justify-center bg-green-500/20" : isCurrent ? "w-10 h-10 rounded-lg flex items-center justify-center bg-blue-500/20" : "w-10 h-10 rounded-lg flex items-center justify-center bg-gray-700"}>
-                      <div className={isCompleted ? "flex items-center justify-center text-green-400" : "flex items-center justify-center"}>
-                        {isCurrent ? <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-400" /> : <Target className={`w-5 h-5 text-orange-400`} />}
-                      </div>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <p className={isCompleted ? "font-semibold text-white" : isCurrent ? "font-semibold text-blue-400" : "font-semibold text-gray-400"}>Layer {layer.id}: {layer.name}</p>
-                        {isCompleted && <CheckCircle className="w-4 h-4 text-green-400" />}
-                      </div>
-                      <p className="text-sm text-gray-500">{layer.description}</p>
-                      {isCurrent && <p className="text-xs text-blue-400 mt-1 animate-pulse">Processing...</p>}
-                    </div>
-                    <div className="text-right">
-                      {isCompleted && <span className="text-xs text-green-400 font-medium">Complete</span>}
-                      {isCurrent && <span className="text-xs text-blue-400 font-medium">Active</span>}
-                      {!isCompleted && !isCurrent && <span className="text-xs text-gray-500 font-medium">Pending</span>}
-                    </div>
-                  </div>
-                );
-              }
-              if (layer.id === 5) {
-                return (
-                  <div key={layer.id} className={isCompleted ? "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-green-500/10 border border-green-500/30" : isCurrent ? "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-blue-500/10 border border-blue-500/30 animate-pulse" : "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-gray-800/50 border border-gray-700"}>
-                    <div className={isCompleted ? "w-10 h-10 rounded-lg flex items-center justify-center bg-green-500/20" : isCurrent ? "w-10 h-10 rounded-lg flex items-center justify-center bg-blue-500/20" : "w-10 h-10 rounded-lg flex items-center justify-center bg-gray-700"}>
-                      <div className={isCompleted ? "flex items-center justify-center text-green-400" : "flex items-center justify-center"}>
-                        {isCurrent ? <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-400" /> : <Zap className={`w-5 h-5 text-pink-400`} />}
-                      </div>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <p className={isCompleted ? "font-semibold text-white" : isCurrent ? "font-semibold text-blue-400" : "font-semibold text-gray-400"}>Layer {layer.id}: {layer.name}</p>
-                        {isCompleted && <CheckCircle className="w-4 h-4 text-green-400" />}
-                      </div>
-                      <p className="text-sm text-gray-500">{layer.description}</p>
-                      {isCurrent && <p className="text-xs text-blue-400 mt-1 animate-pulse">Processing...</p>}
-                    </div>
-                    <div className="text-right">
-                      {isCompleted && <span className="text-xs text-green-400 font-medium">Complete</span>}
-                      {isCurrent && <span className="text-xs text-blue-400 font-medium">Active</span>}
-                      {!isCompleted && !isCurrent && <span className="text-xs text-gray-500 font-medium">Pending</span>}
-                    </div>
-                  </div>
-                );
-              }
-              if (layer.id === 6) {
-                return (
-                  <div key={layer.id} className={isCompleted ? "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-green-500/10 border border-green-500/30" : isCurrent ? "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-blue-500/10 border border-blue-500/30 animate-pulse" : "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-gray-800/50 border border-gray-700"}>
-                    <div className={isCompleted ? "w-10 h-10 rounded-lg flex items-center justify-center bg-green-500/20" : isCurrent ? "w-10 h-10 rounded-lg flex items-center justify-center bg-blue-500/20" : "w-10 h-10 rounded-lg flex items-center justify-center bg-gray-700"}>
-                      <div className={isCompleted ? "flex items-center justify-center text-green-400" : "flex items-center justify-center"}>
-                        {isCurrent ? <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-400" /> : <CheckCircle className={`w-5 h-5 text-cyan-400`} />}
-                      </div>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <p className={isCompleted ? "font-semibold text-white" : isCurrent ? "font-semibold text-blue-400" : "font-semibold text-gray-400"}>Layer {layer.id}: {layer.name}</p>
-                        {isCompleted && <CheckCircle className="w-4 h-4 text-green-400" />}
-                      </div>
-                      <p className="text-sm text-gray-500">{layer.description}</p>
-                      {isCurrent && <p className="text-xs text-blue-400 mt-1 animate-pulse">Processing...</p>}
-                    </div>
-                    <div className="text-right">
-                      {isCompleted && <span className="text-xs text-green-400 font-medium">Complete</span>}
-                      {isCurrent && <span className="text-xs text-blue-400 font-medium">Active</span>}
-                      {!isCompleted && !isCurrent && <span className="text-xs text-gray-500 font-medium">Pending</span>}
-                    </div>
-                  </div>
-                );
-              }
-              return (
-                <div key={layer.id} className={isCompleted ? "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-green-500/10 border border-green-500/30" : isCurrent ? "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-blue-500/10 border border-blue-500/30 animate-pulse" : "flex items-center gap-4 p-4 rounded-xl transition-all duration-500 bg-gray-800/50 border border-gray-700"}>
-                  <div className={isCompleted ? "w-10 h-10 rounded-lg flex items-center justify-center bg-green-500/20" : isCurrent ? "w-10 h-10 rounded-lg flex items-center justify-center bg-blue-500/20" : "w-10 h-10 rounded-lg flex items-center justify-center bg-gray-700"}>
-                    <div className={isCompleted ? "flex items-center justify-center text-green-400" : "flex items-center justify-center"}>
-                      {isCurrent ? <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-400" /> : <Layers className={`w-5 h-5 text-indigo-400`} />}
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <p className={isCompleted ? "font-semibold text-white" : isCurrent ? "font-semibold text-blue-400" : "font-semibold text-gray-400"}>Layer {layer.id}: {layer.name}</p>
-                      {isCompleted && <CheckCircle className="w-4 h-4 text-green-400" />}
-                    </div>
-                    <p className="text-sm text-gray-500">{layer.description}</p>
-                    {isCurrent && <p className="text-xs text-blue-400 mt-1 animate-pulse">Processing...</p>}
-                  </div>
-                  <div className="text-right">
-                    {isCompleted && <span className="text-xs text-green-400 font-medium">Complete</span>}
-                    {isCurrent && <span className="text-xs text-blue-400 font-medium">Active</span>}
-                    {!isCompleted && !isCurrent && <span className="text-xs text-gray-500 font-medium">Pending</span>}
-                  </div>
+                  <p className="text-sm text-gray-500">{layer.description}</p>
                 </div>
-              );
-            })}
+                <div className="text-right">
+                  <span className="text-xs text-gray-500 font-medium">Pending</span>
+                </div>
+              </div>
+            ))}
           </div>
 
           {processingTime && (

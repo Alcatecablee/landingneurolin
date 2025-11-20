@@ -33,7 +33,7 @@ const SAMPLE_CODES = [
   {
     id: "react-component-issues",
     name: "React Component with Issues",
-    description: "Missing TypeScript types, console.log, missing key props",
+    description: "Missing keys, console.log, var declaration, missing aria-labels",
     code: `import React from 'react';
 
 function Button({ children, onClick }) {
@@ -48,21 +48,10 @@ function TodoList({ todos }) {
   return (
     <div>
       {todos.map(todo => (
-        <div key={todo.id}>
+        <div>
           <span>{todo.text}</span>
           <Button onClick={() => {
-            // Replace console.log with proper logging system
-            if (typeof window !== 'undefined') {
-              const event = new CustomEvent('logAction', {
-                detail: {
-                  action: 'delete_todo',
-                  todoId: todo.id,
-                  timestamp: new Date().toISOString()
-                }
-              });
-              window.dispatchEvent(event);
-            }
-            // TODO: Implement delete functionality
+            console.log('Deleting todo', todo.id);
           }}>
             Delete
           </Button>

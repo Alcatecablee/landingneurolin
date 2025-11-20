@@ -1,6 +1,4 @@
-'use no memo';
-
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { X, CheckCircle, Settings, Code, Sparkles, Target, Zap, Layers } from 'lucide-react';
 
 interface LayerInfo {

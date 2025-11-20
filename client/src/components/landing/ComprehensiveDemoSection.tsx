@@ -607,7 +607,7 @@ export function ComprehensiveDemoSection() {
                 {activeTab === 'before' && (
                   <div className="bg-gray-800/30 border border-gray-700 rounded-xl p-6">
                     <h4 className="text-lg font-semibold text-white mb-4">Original Code</h4>
-                    <div className="bg-black/50 rounded p-4 text-sm text-gray-300 font-mono overflow-x-auto">
+                    <div className="bg-black/50 rounded p-4 text-sm text-gray-300 font-mono overflow-x-auto max-h-96">
                       <pre className="whitespace-pre-wrap">{currentCode}</pre>
                     </div>
                   </div>

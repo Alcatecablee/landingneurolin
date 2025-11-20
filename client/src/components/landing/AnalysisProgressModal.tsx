@@ -130,11 +130,9 @@ export function AnalysisProgressModal({
           {/* Layer Progress */}
           <div className="space-y-3 max-h-96 overflow-y-auto">
             {layerInfo.map((layer, index) => {
-              const IconComponent = getLayerIcon(layer.id);
-              const color = getLayerColor(layer.id);
               const isCompleted = animationStep > index;
               const isCurrent = animationStep === index + 1;
-              
+
               return (
                 <div
                   key={layer.id}
@@ -148,19 +146,17 @@ export function AnalysisProgressModal({
                 >
                   {/* Layer Icon */}
                   <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                    isCompleted 
-                      ? "bg-green-500/20" 
-                      : isCurrent 
-                      ? "bg-blue-500/20" 
+                    isCompleted
+                      ? "bg-green-500/20"
+                      : isCurrent
+                      ? "bg-blue-500/20"
                       : "bg-gray-700"
                   }`}>
-                    {isCurrent ? (
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-400"></div>
-                    ) : (
-                      <IconComponent className={`w-5 h-5 ${
-                        isCompleted ? "text-green-400" : color
-                      }`} />
-                    )}
+                    <div className={`flex items-center justify-center ${
+                      isCompleted ? "text-green-400" : ""
+                    }`}>
+                      {renderLayerIcon(layer.id, isCurrent)}
+                    </div>
                   </div>
 
                   {/* Layer Info */}

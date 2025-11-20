@@ -429,15 +429,6 @@ export default function Index() {
         </div>
       </section>
 
-      {/* CLI Section */}
-      <div ref={cliSectionRef} className={`transition-all duration-1000 transform ${
-        cliSectionInView
-          ? 'opacity-100 translate-y-0'
-          : 'opacity-0 translate-y-20'
-      }`}>
-        <CLISection />
-      </div>
-
       {/* VSCode Section - Removed: CLI-only now */}
 
       {/* FAQ Section */}

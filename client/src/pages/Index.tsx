@@ -222,46 +222,6 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Quick CTA Section - Moved up for immediate action */}
-      <section
-        ref={heroCtaRef}
-        className="py-12 md:py-16 px-4"
-        aria-label="Call to action section"
-      >
-        <div className={`max-w-4xl mx-auto text-center transition-all duration-1000 transform ${
-          heroCtaInView
-            ? 'opacity-100 translate-y-0'
-            : 'opacity-0 translate-y-20'
-        }`}>
-          <h2 className={`text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-6 md:mb-8 tracking-tight text-white transition-all duration-1000 delay-200 transform ${
-            heroCtaInView
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-10'
-          }`}>
-            See It In Action
-          </h2>
-          <p className={`text-base md:text-lg lg:text-xl text-gray-300 mb-6 md:mb-8 leading-relaxed transition-all duration-1000 delay-400 transform ${
-            heroCtaInView
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-10'
-          }`}>
-            Watch NeuroLint automatically fix hydration crashes, missing keys, and ESLint errors
-          </p>
-          <a
-            href="#comprehensive-demo"
-            className={`inline-flex items-center gap-2 md:gap-3 bg-white text-black px-6 md:px-8 py-3 md:py-4 rounded-lg md:rounded-xl font-bold text-base md:text-lg hover:bg-gray-100 transition-all duration-1000 shadow-xl delay-600 transform interactive min-h-[48px] ${
-              heroCtaInView
-                ? 'opacity-100 translate-y-0 scale-100'
-                : 'opacity-0 translate-y-20 scale-95'
-            }`}
-            aria-label="Try interactive demo"
-          >
-            <Play className="w-6 h-6" />
-            Try Interactive Demo
-          </a>
-        </div>
-      </section>
-
       {/* Comprehensive Demo Section - MOVED UP for immediate engagement */}
       <div ref={demoSectionRef} className={`transition-all duration-1000 transform ${
         demoSectionInView

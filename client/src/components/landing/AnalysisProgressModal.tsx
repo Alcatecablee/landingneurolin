@@ -1,5 +1,3 @@
-'use no memo';
-
 import { useEffect } from 'react';
 import { X, CheckCircle, Settings, Code, Sparkles, Target, Zap, Layers } from 'lucide-react';
 
@@ -54,6 +52,56 @@ function LayerIcon({ layerId, isSpinning }: LayerIconProps) {
   if (iconIndex === 5) return <CheckCircle className={`w-5 h-5 ${color}`} />;
   if (iconIndex === 6) return <Layers className={`w-5 h-5 ${color}`} />;
   return <Settings className="w-5 h-5 text-gray-400" />;
+}
+
+interface LayerItemProps {
+  layer: LayerInfo;
+  index: number;
+  isCompleted: boolean;
+  isCurrent: boolean;
+}
+
+function LayerItem({ layer, isCompleted, isCurrent }: LayerItemProps) {
+  let containerClass = "bg-gray-800/50 border border-gray-700";
+  let iconClass = "bg-gray-700";
+  let textClass = "text-gray-400";
+
+  if (isCompleted) {
+    containerClass = "bg-green-500/10 border border-green-500/30";
+    iconClass = "bg-green-500/20";
+    textClass = "text-white";
+  } else if (isCurrent) {
+    containerClass = "bg-blue-500/10 border border-blue-500/30 animate-pulse";
+    iconClass = "bg-blue-500/20";
+    textClass = "text-blue-400";
+  }
+
+  return (
+    <div className={`flex items-center gap-4 p-4 rounded-xl transition-all duration-500 ${containerClass}`}>
+      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${iconClass}`}>
+        <div className={`flex items-center justify-center ${isCompleted ? "text-green-400" : ""}`}>
+          <LayerIcon layerId={layer.id} isSpinning={isCurrent} />
+        </div>
+      </div>
+
+      <div className="flex-1">
+        <div className="flex items-center gap-2 mb-1">
+          <p className={`font-semibold ${textClass}`}>
+            Layer {layer.id}: {layer.name}
+          </p>
+          {isCompleted && <CheckCircle className="w-4 h-4 text-green-400" />}
+        </div>
+        <p className="text-sm text-gray-500">{layer.description}</p>
+        {isCurrent && <p className="text-xs text-blue-400 mt-1 animate-pulse">Processing...</p>}
+      </div>
+
+      <div className="text-right">
+        {isCompleted && <span className="text-xs text-green-400 font-medium">Complete</span>}
+        {isCurrent && <span className="text-xs text-blue-400 font-medium">Active</span>}
+        {!isCompleted && !isCurrent && <span className="text-xs text-gray-500 font-medium">Pending</span>}
+      </div>
+    </div>
+  );
 }
 
 export function AnalysisProgressModal({

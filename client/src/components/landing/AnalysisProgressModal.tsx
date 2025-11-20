@@ -50,7 +50,7 @@ export function AnalysisProgressModal({
   if (!isOpen) return null;
 
   // Handle escape key
-  React.useEffect(() => {
+  useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
